@@ -1,0 +1,144 @@
+* {
+  font-family: "Source Code Pro", monospace;
+  background-color: #bee9e8;
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+.logo {
+  width: 80%;
+  margin: auto;
+  display: block;
+  max-width: 450px;
+}
+
+.wrapper {
+  width: 100%;
+  padding: 0 20px 20px 0;
+  margin: 10px auto;
+  display: flex;
+  position: relative;
+}
+
+.main-content {
+  margin-left: 21%;
+  width: 100%;
+}
+.big-title-text {
+  text-align: center;
+  font-size: 30px;
+  color: #404e4d;
+}
+
+.description .main-item {
+  list-style: none;
+}
+
+li {
+  list-style-type: circle;
+}
+
+.title-text {
+  text-align: left;
+  font-size: 25px;
+  color: #c3423f;
+  font-weight: bolder;
+}
+
+.step {
+  font-size: 16px;
+  font-weight: bolder;
+}
+
+.error,
+.error * {
+  color: red !important;
+  animation: 0.75s ease-in-out 0s 1 PopUp;
+}
+
+@keyframes PopUp {
+  0% {
+    font-size: 16px;
+  }
+  50% {
+    font-size: 18px;
+  }
+  100% {
+    font-size: 16px;
+  }
+}
+
+.button {
+  background-color: #62b6cb;
+  color: #bee9e8;
+  padding: 5px;
+  margin: 5px;
+  min-width: 30%;
+  border-radius: 5px;
+  font-size: 20px;
+  transition-duration: 0.5s;
+}
+
+.button:disabled {
+  background-color: #646a6b;
+  color: #bdd6d6;
+  padding: 5px;
+  margin: 5px;
+  min-width: 30%;
+  border-radius: 5px;
+  font-size: 20px;
+}
+
+.button:hover {
+  background-color: #bdd6d6;
+  color: #646a6b;
+  font-size: 22px;
+}
+
+.arbiterDesc {
+  color: red;
+  font-size: 17px;
+}
+.arbitersLink {
+  font-size: 12px;
+  text-decoration: underline !important;
+}
+
+.copy_button {
+  background-color: #62b6cb;
+  color: #bee9e8;
+  padding: 5px;
+  margin: 5px;
+  min-width: 10%;
+  border-radius: 5px;
+  font-size: 15px;
+  transition-duration: 0.5s;
+}
+
+.copy_button:hover {
+  font-size: 18px;
+  border-radius: 10px;
+}
+
+.clausePreview {
+  border: 1.5px solid #000000;
+  margin: 3px;
+  padding: 10px;
+  width: 80%;
+}
+
+@media only screen and (min-width: 1000px) {
+  .logo {
+    width: 30%;
+  }
+  .wrapper {
+    width: 100%;
+  }
+
+  .container {
+    text-align: center;
+  }
+}

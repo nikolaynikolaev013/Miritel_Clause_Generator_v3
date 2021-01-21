@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miritel Clause Generator</title>
+    <script src="https://kit.fontawesome.com/c16588db39.js" crossorigin="anonymous"></script>
+    
+	
+	<script src='scripts/sidebar/sidebar.js'></script>
+	<script src='scripts/utils.js'></script>
+    <script src='scripts_handler.js'></script>
+	<script src='scripts/step_0_welcome/step_zero.js'></script>
+	<script src='scripts/step_1_type_of_clause/step_one.js'></script>
+	<script src='scripts/step_2_starting_clause/step_two.js'></script>
+	<script src='scripts/step_3_num_of_arbiters/step_three.js'></script>
+	<script src='scripts/step_4_arbitrator_qualification/step_four.js'></script>
+	<script src='scripts/step_5_governing_law/step_five.js'></script>
+
+	<link rel="stylesheet" href="styles.css">
+	<link rel="stylesheet" href="sidebar/sidebar_styles.css">
+
+	<link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet">
+</head>
+<body>
+	<div class="wrapper">
+
+		<div class="sidebar">
+			
+		</div>
+			<div class="main-content">
+			<a href="https://miritel.bg"><img class="logo" src="img/Miritel_logo.png" alt="Miritel Logo"></a>
+            
+		<h2 class="big-title-text"></h2>
+		<br>
+
+        <ul class="description">
+			<br>
+        </ul>
+
+		<br>
+		<br>
+		<br>
+		<div class="container">
+			<button class="button" type="back" id="back" name="back" >Назад</button>
+			<button class="button" type="submit" id="next" name="next" >Напред</button>
+		</div>
+
+		</br>
+		</br>
+
+				<div> Как изглежда Вашата клауза до тук: 
+					<div style="display:flex;">
+						<div class="clausePreview" id="clausePreview">
+							<i>  </i>
+						</div>
+						
+						<button id="copy_button" class="copy_button" onclick="copyToClipboard(this)">Копирай клаузата</button>
+					</div>
+				</div>
+			</div>
+		</div>
+    </body>
+</html>
