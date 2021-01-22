@@ -29,7 +29,7 @@ function generateSidebar(userData){
 
 function updateSidebar(userData){
     let availableOptions = [];
-    if (userData.step <= 2) {
+    if (userData.step <= 2 && !userData.typeOfArgument) {
         availableOptions = 
         [
             "Добре дошли!",
@@ -74,9 +74,16 @@ function updateSidebar(userData){
 
         if (counter === userData.step) {
             newLiEl.classList.add('curr-item');
-            newLiEl.classList.add('enabled');
+        }else{
+            if (userData.step === 0 && !userData.typeOfArgument
+                || (counter === 2 && !userData.typeOfArgument)) {
+                newLiEl.classList.add('disabled');
+            }else{
+                newLiEl.classList.add('enabled');  
+            }
         }
-        
+
+
         newLiEl.id = counter;
         newUl.appendChild(newLiEl);
         counter++;

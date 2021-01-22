@@ -12,9 +12,20 @@ function fillPage(mainTitle, mainDescription){
         if (typeof(mainDescription[i]) === 'object') {
             let newDescriptionUl = document.createElement('ul');
 
+            let isRadio = false;
+
+            if (mainDescription[i][0] === 'radio' ) {
+                isRadio = true;
+                mainDescription[i].shift();
+            }
+
             for (let j = 0; j < mainDescription[i].length; j++) {
                 let newDescriptionLi = document.createElement('li');
-                newDescriptionLi.classList.add('sub-item');
+                if (isRadio) {
+                    newDescriptionLi.classList.add('radio-item');
+                }else{
+                    newDescriptionLi.classList.add('sub-item');
+                }
                 newDescriptionLi.innerHTML = mainDescription[i][j];
                 newDescriptionUl.appendChild(newDescriptionLi);
                 descriptionUl.appendChild(newDescriptionUl)
@@ -30,32 +41,6 @@ function fillPage(mainTitle, mainDescription){
         }
 
     }
-}
-
-function insertRadioButton(title, id, name, checked){
-    let descriptionUl = document.querySelector('.description');
-
-    let newLi = document.createElement('li');
-
-    let newInput = document.createElement('input');
-    newInput.type = 'radio';
-    newInput.id = id;
-    newInput.name = name; 
-    newInput.checked = checked;
-
-    newLi.appendChild(newInput);
-
-    let newLabel = document.createElement('label');
-    newLabel.htmlFor = id;
-    newLabel.innerHTML = title
-
-    newLi.appendChild(newLabel);
-
-    newLi.classList.add('main-item');
-    
-    descriptionUl.appendChild(newLi);
-
-    return newInput;
 }
 
 function insertBlankSpace(multiplier = 1){
@@ -83,7 +68,27 @@ function insertParagraph(content, pClass, id){
     descriptionUl.appendChild(newP)
     return newP;
 }
+function createRadioButton(title, id, name, checked){
+    let newSpan = document.createElement('span');
 
+    let newInput = document.createElement('input');
+    newInput.type = 'radio';
+    newInput.id = id;
+    newInput.name = name; 
+    newInput.checked = checked;
+
+    newSpan.appendChild(newInput);
+
+    let newLabel = document.createElement('label');
+    newLabel.htmlFor = id;
+    newLabel.innerHTML = title
+
+    newSpan.appendChild(newLabel);
+
+    newSpan.classList.add('radio-item');
+
+    return newSpan;
+}
 function createInputfield(id, name, placeholder, className, newValue){
     let newInput = document.createElement('input');
     newInput.id = id;
@@ -93,7 +98,18 @@ function createInputfield(id, name, placeholder, className, newValue){
     newInput.placeholder = placeholder;
     return newInput;
 }
+function createParagraph(content, pClass, id){
+    let newP = document.createElement('p');
+    newP.innerHTML = content;
 
+    if (pClass) {
+        newP.classList.add(pClass);
+    }
+    if (id) {
+        newP.id = id;
+    }
+    return newP;
+}
 function createSelectMenu(id, name, options){
     let selectEl = document.createElement('select');
     selectEl.id = id;

@@ -33,7 +33,8 @@ a {
   color: #404e4d;
 }
 
-.description .main-item {
+.description .main-item,
+.radio-item {
   list-style: none;
 }
 
@@ -104,6 +105,9 @@ li {
 }
 .arbitersLink {
   font-size: 12px;
+  text-decoration: underline !important;
+}
+.link {
   text-decoration: underline !important;
 }
 

@@ -1,6 +1,25 @@
 function stepFour(constants, userData){
     clearPage();
 
+    //Radio Buttons
+    let radio1 = createRadioButton('Оставете арбитражната клауза мълчалива по отношение на арбитражните квалификации, посочени в арбитражната клауза.',
+        'silent', 'qualification');
+    let p1 = createParagraph(`Арбитражната клауза посочва, че арбитърът има определени минимални квалификации,
+         опит или опит.`, 'arbiterDesc');
+
+    let availableArbiters = 
+    [
+        'Радослав Данков',
+        'Данков'
+    ];
+    let newSelectEl = createSelectMenu('selectedArbiter', 'selectedArbiter',availableArbiters);
+    
+    let newAEl = createA('Списък на всички арбитри', 'arbitersLink', 'https://miritel.bg', '_blank');
+
+    let radioButtContent = `Арбитърът(ите) е: ${newSelectEl.outerHTML} ${newAEl.outerHTML}`;
+    let radio2 = createRadioButton(radioButtContent, 'arbiter', 'qualification');
+
+    
     let title = 'Квалификации на арбитрите';
     let description = 
     [
@@ -10,58 +29,42 @@ function stepFour(constants, userData){
         да посочат дали арбитърът (ите) имат определен опит или опит. Моля, имайте предвид обаче, 
         че прекалено специфичните квалификации на арбитър, които се съдържат в арбитражната клауза, 
         могат значително да намалят броя на арбитрите, които са на разположение за назначаване в този 
-        случай.`
+        случай.`, 'blank',
+        radio1.outerHTML, 'blank',
+        p1.outerHTML, 'blank',
+        radio2.outerHTML, 'blank'
+
     ]
 
     fillPage(title, description);
-
-    insertBlankSpace();
-
-    insertRadioButton('Оставете арбитражната клауза мълчалива по отношение на арбитражните квалификации, посочени в арбитражната клауза.',
-        'silent', 'qualification');
-    
-    insertBlankSpace();
-
-    insertParagraph(`Арбитражната клауза посочва, че арбитърът има определени минимални квалификации,
-         опит или опит.`, 'arbiterDesc');
-
-    let availableArbiters = 
-    [
-        'Радослав Данков',
-        'Данков'
-    ];
-    let newSelectEl = createSelectMenu('selectedArbiter', 'selectedArbiter',availableArbiters);
-    let newAEl = createA('Списък на всички арбитри', 'arbitersLink', 'https://miritel.bg', '_blank');
-
-    let radioButtContent = `Арбитърът(ите) е: ${newSelectEl.outerHTML} ${newAEl.outerHTML}`;
-    let radioButton = insertRadioButton(radioButtContent, 'arbiter', 'qualification');
 
     (function setValues(userData){
         let types = [
             'qualification'
         ]
+        newSelectEl = document.querySelector(`#selectedArbiter`);
+        newSelectEl.disabled = true;
 
         for (const type of types) {
             if (userData[type]) {
 
                 document.querySelector(`#${userData[type]}`).checked = true;
-                newSelectEl = document.querySelector(`#selectedArbiter`);
                 
                 if (userData[type] === 'arbiter') {
                     newSelectEl.value = userData.arbiter;
-                }else{
-                    newSelectEl.disabled = true;
+                    newSelectEl.disabled = false;
                 }
             }
         }
     })(userData);
 
+    radio2 = document.querySelector('#arbiter');
 
-    radioButton.parentElement.parentElement.addEventListener('click', (e)=>{
+    radio2.parentElement.parentElement.parentElement.addEventListener('click', (e)=>{
         newSelectEl = document.querySelector('#selectedArbiter');
 
-        if (e.target === radioButton 
-                || (radioButton.checked)) {
+        if (e.target === radio2 
+                || (radio2.checked)) {
             newSelectEl.disabled = false;
         }else{
             newSelectEl.disabled = true;

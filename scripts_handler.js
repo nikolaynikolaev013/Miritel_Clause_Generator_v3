@@ -15,7 +15,13 @@ window.addEventListener('load', ()=>{
     let sidebarUl = document.querySelector('.sidebar_ul');
 
     sidebarUl.parentElement.addEventListener('click', (e)=>{
-        if (!isNaN(e.target.id) && Number(e.target.id) !== Number(userData.step)) {
+
+        if (e.target === document.querySelector('.start_over_button')) {
+            document.cookie = "data= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
+            location.reload();
+        }else if (!isNaN(e.target.id) 
+                    && Number(e.target.id) !== Number(userData.step)
+                    && !e.target.classList.contains('disabled')) {
             let data = {};
             data.step = Number(e.target.id);
 
@@ -31,6 +37,7 @@ window.addEventListener('load', ()=>{
             resetButtons(constants);
 
             setCookie(userData, null);
+            updateSidebar(userData);
             stepChooser();
         }
     });
@@ -78,6 +85,7 @@ window.addEventListener('load', ()=>{
                 break;
         }
 
+        updateSidebar(userData);
         userData = setCookie(data, userData);
     });
 

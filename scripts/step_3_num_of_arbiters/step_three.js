@@ -1,6 +1,30 @@
 function stepThree(constants, userData){
     clearPage();
 
+    //Radio buttons
+        //RadioButton1
+        let title1 = `Оставете арбитражната клауза мълчалива по отношение на 
+            броя на арбитрите и предвидете решението да бъде направено в съответствие 
+            с правилата и процедурите на ААА`
+        let radioButton1 = createRadioButton(title1, 'silent', 'howManyArbiters');
+
+        //RadioButton2
+        let title2 = `Исковете се разглеждат от един арбитър.`
+        let radioButton2 = createRadioButton(title2, 'oneArbiter', 'howManyArbiters');
+
+        //RadioButton3
+        let title3 = `Исковете се разглеждат от комисия от трима арбитри.`
+        let radioButton3 = createRadioButton(title3, 'threeArbiters', 'howManyArbiters');
+
+        //RadioButton4
+        let priceInput = createInputfield('amount', 'amount', 'стойност', 'priceInput');
+        priceInput.disabled = true;
+
+        let title4 = `Исковете се разглеждат от един арбитър, освен ако сумата на иска не надвишава ${priceInput.outerHTML}
+        лева. Моля, въведете размера на иска, надвишаването на който ще доведе от разглеждане на спорът от комисия от трима арбитри.`
+        let radioButton4 = createRadioButton(title4, 'money', 'howManyArbiters');
+
+
     let title = 'Брой арбитри';
     let description;
 
@@ -24,6 +48,12 @@ function stepThree(constants, userData){
             един арбитър. В допълнение, назначаването на трима арбитри може значително да увеличи времето, 
             необходимо за сключване на арбитраж. Поради тези причини ААА все повече препоръчва да бъде назначен
             единствен арбитър, дори за спорове с претенции, които обикновено иначе се изслушват от трима арбитри.`,
+            'blank',
+            [
+                'radio', radioButton1.outerHTML, radioButton2.outerHTML,
+                                     radioButton3.outerHTML, radioButton4.outerHTML
+            ],
+             'blank'
         ];
     }
     else if (userData.typeOfArgument === 'domain') {
@@ -44,7 +74,12 @@ function stepThree(constants, userData){
 			с повече от три пъти цената на един арбитър. В допълнение, назначаването на трима арбитри може 
 			значително да увеличи времето, необходимо за сключване на арбитраж. Поради тези причини Мирител 
 			все повече препоръчва да бъде назначен единствен арбитър, дори за спорове с претенции, които
-			 обикновено иначе се изслушват от трима арбитри.</b>`,
+             обикновено иначе се изслушват от трима арбитри.</b>`, 'blank',
+            [
+                'radio', radioButton1.outerHTML, radioButton2.outerHTML,
+                                     radioButton3.outerHTML
+            ],
+             'blank'
         ];
     }
 
@@ -52,41 +87,21 @@ function stepThree(constants, userData){
     fillPage(title, description);
     insertBlankSpace();
 
-    //RadioButton1
-    let title1 = `Оставете арбитражната клауза мълчалива по отношение на 
-    	броя на арбитрите и предвидете решението да бъде направено в съответствие 
-    	с правилата и процедурите на ААА`
-    insertRadioButton(title1, 'silent', 'howManyArbiters');
+        radioButton4 = document.querySelector('#money');
 
-    //RadioButton2
-    let title2 = `Исковете се разглеждат от един арбитър.`
-    insertRadioButton(title2, 'oneArbiter', 'howManyArbiters');
+        if (radioButton4) {
+            radioButton4.parentElement.parentElement.addEventListener('click', (e)=>{
+                priceInput = document.querySelector('#amount');
 
-    //RadioButton3
-    let title3 = `Исковете се разглеждат от комисия от трима арбитри.`
-    insertRadioButton(title3, 'threeArbiters', 'howManyArbiters');
+                if (e.target === radioButton4 || radioButton4.checked) {
+                    priceInput.disabled = false;
+                    priceInput.focus();
+                }else{
+                    priceInput.disabled = true;
+                }
+            });
+        }
 
-    if (userData.typeOfArgument === 'business') {
-            
-        //RadioButton4
-        let priceInput = createInputfield('amount', 'amount', 'стойност', 'priceInput');
-        priceInput.disabled = true;
-
-        let title4 = `Исковете се разглеждат от един арбитър, освен ако сумата на иска не надвишава ${priceInput.outerHTML}
-        лева. Моля, въведете размера на иска, надвишаването на който ще доведе от разглеждане на спорът от комисия от трима арбитри.`
-        let radioButton4 = insertRadioButton(title4, 'money', 'howManyArbiters');
-
-        radioButton4.parentElement.parentElement.addEventListener('click', (e)=>{
-            priceInput = document.querySelector('#amount');
-
-            if (e.target === radioButton4 || radioButton4.checked) {
-                priceInput.disabled = false;
-                priceInput.focus();
-            }else{
-                priceInput.disabled = true;
-            }
-        });
-    }
 
     (function setValues(userData){
         let types = [
@@ -95,13 +110,15 @@ function stepThree(constants, userData){
         
     
         for (const type of types) {
-            if (userData[type] && userData['typeOfArgument'] != 'domain') {
-                document.querySelector(`#${userData[type]}`).checked = true;
-                if (userData[type] === 'money') {
+            if (userData[type]) {
+                if (userData[type] === 'money' && userData['typeOfArgument'] === 'business') {
+                    document.querySelector(`#${userData[type]}`).checked = true;
                     let priceInput = document.querySelector(`#amount`);
                     priceInput.value = userData.amount;
                     priceInput.disabled = false;
                     priceInput.focus();
+                }else if (userData[type] != 'money') {
+                    document.querySelector(`#${userData[type]}`).checked = true;
                 }
             }
         }
@@ -128,16 +145,12 @@ function stepThreeValidateAndGetData(){
     if (data[Object.keys(data)[0]] === "money") {
         let moneyInput = document.querySelector('#amount');
 
-        if (moneyInput.value && !isNaN(moneyInput.value)) {
+        if (moneyInput.value && !isNaN(moneyInput.value) && Number(moneyInput.value) > 1) {
             data[Object.keys(data)[1]] = moneyInput.value;
         }else{
         if (!document.querySelector('.error')) {
-            fillPage(null, 
-            ['blank',
-            'Моля, въведете стойност или изберете друга опция преди да продължите.']
-            );
+            insertParagraph('Моля, въведете валидна стойност или изберете друга опция преди да продължите.', 'error', 'error')
         }
-            radio[3].parentElement.nextElementSibling.nextElementSibling.classList.add('error');
             err = true;
         }
     }
