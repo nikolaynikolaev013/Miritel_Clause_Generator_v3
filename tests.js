@@ -84,7 +84,7 @@ function cookiesTest(){
     console.log(parsedData);
 }
 
-(function testForof(){
+function testForof(){
     availableOptions = 
         [
             "Добре дошли!", "Тип клауза", "Вашата клауза", "Брой арбитри", "Квалификация на арбитраж",
@@ -98,4 +98,18 @@ function cookiesTest(){
         }
 
         console.log(str);
+}
+
+(function objectTests(){
+    let types = {}
+
+    fillInts(types);
+    function fillInts(types){
+
+        for (let i = 0; i < 10; i++) {
+            types[i] = i+10;
+        }
+        console.log(types);
+    }
+
 })();

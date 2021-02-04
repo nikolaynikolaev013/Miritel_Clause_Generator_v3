@@ -1,4 +1,4 @@
-function stepFour(constants, userData){
+function stepFour(userData){
     clearPage();
 
     //Radio Buttons
@@ -38,6 +38,14 @@ function stepFour(constants, userData){
 
     fillPage(title, description);
 
+    enableOnClickEvent('arbiter', ['selectedArbiter']);
+
+    // let inputFields = {
+    //     qualification: ['selectedArbiter', 'arbiter']
+    // }
+    // setValues(userData, inputFields);
+
+
     (function setValues(userData){
         let types = [
             'qualification'
@@ -51,48 +59,19 @@ function stepFour(constants, userData){
                 document.querySelector(`#${userData[type]}`).checked = true;
                 
                 if (userData[type] === 'arbiter') {
-                    newSelectEl.value = userData.arbiter;
+                    newSelectEl.value = userData.selectedArbiter;
                     newSelectEl.disabled = false;
                 }
             }
         }
     })(userData);
-
-    radio2 = document.querySelector('#arbiter');
-
-    radio2.parentElement.parentElement.parentElement.addEventListener('click', (e)=>{
-        newSelectEl = document.querySelector('#selectedArbiter');
-
-        if (e.target === radio2 
-                || (radio2.checked)) {
-            newSelectEl.disabled = false;
-        }else{
-            newSelectEl.disabled = true;
-        }
-    });
 }
 
 
 function stepFourValidateAndGetData(){
     let data = {
         qualification:null,
-        arbiter:null,
     }
 
-    let radio = document.getElementsByName(Object.keys(data)[0]);
-
-     for (const butt of radio) {
-         if (butt.checked) {
-             data[Object.keys(data)[0]] = butt.id;
-             break;
-         }
-     }
-
-    if (data[Object.keys(data)[0]] === "arbiter") {
-        let selectArbiterOptionsEl = document.querySelector('#selectedArbiter');
-        data[Object.keys(data)[1]] = selectArbiterOptionsEl.value;
-        console.log(selectArbiterOptionsEl.value);
-    }
- return data;
-
+    return validateSingleInputOfAllRadioButtons(data, 'arbiter', 'selectedArbiter');
 }

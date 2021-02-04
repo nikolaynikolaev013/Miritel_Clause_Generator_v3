@@ -164,7 +164,251 @@ function setCookie(newData, oldData){
     document.cookie = `data=${json}`;
 
     return getCookie();
+
 }
+
+// function setValues(userData, inputs){
+//     for (const type of Object.keys(inputs)) {
+//         if (userData[type]) {
+
+//             document.querySelector(`#${userData[type]}`).checked = true;
+            
+//             if (inputs[type]) {
+//                 newSelectEl = document.querySelector(`#${inputs[type][0]}`);
+//                 newSelectEl.disabled = true;
+
+//                 if (inputs.hasOwnProperty(type)) {
+//                     newSelectEl.value = userData[inputs[type][1]];
+//                     newSelectEl.disabled = false;
+//                 }
+//             }
+//         }
+//     }
+// };
+
+function enableOnClickEvent(radioButtID, selectElIDs){
+    let radio2 = document.querySelector(`#${radioButtID}`);
+
+    radio2.parentElement.parentElement.parentElement.addEventListener('click', (e)=>{
+
+        for (const input of selectElIDs) {
+            newSelectEl = document.querySelector(`#${input}`);
+
+            if (e.target === radio2 
+                    || (radio2.checked)) {
+                newSelectEl.disabled = false;
+            }else{
+                newSelectEl.disabled = true;
+            }
+        }
+    });
+}
+
+// function validateSingleNumberInputOfARadioButton(data, radioValue, inputID){
+
+//     let err = false;
+//     let radio = document.getElementsByName(Object.keys(data)[0]);
+
+//     for (const butt of radio) {
+//         if (butt.checked) {
+//             data[Object.keys(data)[0]] = butt.id;
+//             break;
+//         }
+//     }
+
+//     if (data[Object.keys(data)[0]] === `${radioValue}`) {
+//         let moneyInput = document.querySelector(`#${inputID}`);
+
+//         if (moneyInput.value && !isNaN(moneyInput.value) && Number(moneyInput.value) > 1) {
+//             data[Object.keys(data)[1]] = moneyInput.value;
+//         }else{
+//             if (!document.querySelector('.error')) {
+//                 insertParagraph('Моля, въведете валидна стойност или изберете друга опция преди да продължите.', 'error', 'error')
+//             }
+//             err = true;
+//         }
+//     }
+
+//  data.err = err;
+
+//  return data;
+// }
+
+function setValues(userData, cookieMainName, radioButtonsInputs){
+
+    for (const type in radioButtonsInputs) {
+        if (userData[cookieMainName] === type) {
+            document.querySelector(`#${type}`).checked = true;
+            
+
+            if (radioButtonsInputs[type] != null) {
+                for (const inputValue of radioButtonsInputs[type]) {
+                    let inputEl = document.querySelector(`#${inputValue}`);
+                    inputEl.value = userData[inputValue];
+                }
+            }
+        }
+    }
+}
+
+function validateSingleInputOfAllRadioButtons(data, radioValue, inputID){
+
+    let err = false;
+    let radio = document.getElementsByName(Object.keys(data)[0]);
+
+    for (const butt of radio) {
+        if (butt.checked) {
+            data[Object.keys(data)[0]] = butt.id;
+            break;
+        }
+    }
+
+    if (data[Object.keys(data)[0]] === `${radioValue}`) {
+        let inputField = document.querySelector(`#${inputID}`);
+
+        if (inputField.value) {
+            data[inputID] = inputField.value;
+        }else{
+        if (!document.querySelector('.error')) {
+            insertParagraph('Моля, въведете валидна стойност или изберете друга опция преди да продължите.', 'error', 'error')
+        }
+            err = true;
+        }
+    }
+    else if (data[Object.keys(data)[0]] == undefined){
+        err = true;
+    }
+
+    console.log(data[Object.keys(data)[0]]);
+    data.err = err;
+
+    return data;
+}
+
+function validateSingleRadioButton(data, radioValue){
+
+    let err = true;
+    let radio = document.querySelector(`#${radioValue}`);
+
+    if (radio && radio.checked) {
+        err = false;
+        data[Object.keys(data)[0]] = radio.id;
+        }
+    data.err = err;
+
+    return data;
+}
+function validateSingleInputOfOneRadioButton(data, radioValue, inputID, isNumber = false){
+
+    let err = true;
+    let radio = document.querySelector(`#${radioValue}`);
+
+    if (radio && radio.checked) {
+        err = false;
+        data[Object.keys(data)[0]] = radio.id;
+
+        
+        if (data[Object.keys(data)[0]] && data[Object.keys(data)[0]] === `${radioValue}`) {
+                let inputField = document.querySelector(`#${inputID}`);
+
+                if (isNumber && inputField.value && !isNaN(inputField.value) && Number(inputField.value) >= 0) {
+                    err = false;
+                    data[inputID] = inputField.value;
+                }
+                else if (inputField.value) {
+                    err = false;
+                    data[inputID] = inputField.value;
+                }else{
+                    err = true;
+                }
+            }
+        }
+    data.err = err;
+
+    return data;
+}
+function validateMiltipleInputRadios(data, radioButtons){
+
+    let hasCheckedBtn = false;
+    let err = true;
+
+    for (const radio in radioButtons) {
+        //checks if the radio button has any input fields
+        if (radioButtons[radio] != null) {
+            let radioButton = document.querySelector(`#${radio}`);
+            if (radioButton && radioButton.checked) {
+                hasCheckedBtn = true;
+
+                for (const input of radioButtons[radio]) {
+                    //returns data.err = false if the input is valid
+                    let returnedData = validateSingleInputOfOneRadioButton(data, radio, input);
+                    //TODO with numbers
+                    err = returnedData.err;
+                    if (err) {
+                        continue;
+                    }
+                }
+            }
+        }
+        //only radio button, whithout input fields in it
+        else{
+            let radioButton = document.querySelector(`#${radio}`);
+            if (radioButton && radioButton.checked) {
+                hasCheckedBtn = true;
+
+                //returns data.err = false if the button is checked
+                let returnedData = validateSingleRadioButton(data, radio);
+                err = returnedData.err;
+            }
+        }
+
+        if (!err) {
+            break;
+        }
+    }
+
+    if (err && hasCheckedBtn) {
+        if (!document.querySelector('.error')) {
+            insertParagraph('Моля, въведете валидна стойност или изберете друга опция преди да продължите.', 'error', 'error')
+        }
+    }else{
+        err = false;
+    }
+    
+    data.err = err;
+
+    return data;
+    // let radio = document.getElementsByName(Object.keys(data)[0]);
+
+    // for (const butt of radio) {
+    //     if (butt.checked) {
+    //         data[Object.keys(data)[0]] = butt.id;
+    //         break;
+    //     }
+    // }
+
+    // if (data[Object.keys(data)[0]] === `${radioValue}`) {
+    //     let inputField = document.querySelector(`#${inputID}`);
+
+    //     if (inputField.value) {
+    //         data[inputID] = inputField.value;
+    //     }else{
+    //     if (!document.querySelector('.error')) {
+    //         insertParagraph('Моля, въведете валидна стойност или изберете друга опция преди да продължите.', 'error', 'error')
+    //     }
+    //         err = true;
+    //     }
+    // }
+    // else if (data[Object.keys(data)[0]] == undefined){
+    //     err = true;
+    // }
+
+    // console.log(data[Object.keys(data)[0]]);
+    // data.err = err;
+
+    // return data;
+}
+
 function getCookie(oldData){
     let cookie = document.cookie;
     let prefix = 'name=';

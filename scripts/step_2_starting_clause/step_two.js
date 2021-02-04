@@ -1,4 +1,4 @@
-function stepTwo(constants){
+function stepTwo(){
     clearPage();
 
     let title = `Клауза за стандартен арбитраж`;

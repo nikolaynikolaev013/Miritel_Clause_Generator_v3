@@ -48,6 +48,8 @@ window.addEventListener('load', ()=>{
 
         let data = null;
 
+        
+
         switch (userData.step) {
             case 0:
                 userData.step++;
@@ -79,7 +81,53 @@ window.addEventListener('load', ()=>{
                 stepChooser();
                 break;
             case 5: 
-                //data = stepFourValidateAndGetData();
+                data = stepFiveValidateAndGetData();
+                if (!data.err) {
+                    userData.step++;
+                    stepChooser();
+                }
+                break;
+            case 6: 
+                data = stepSixValidateAndGetData();
+                if (!data.err) {
+                    userData.step++;
+                    stepChooser();
+                }
+                break;
+            case 7: 
+                data = stepSevenValidateAndGetData();
+                userData.step++;
+                stepChooser();
+                break;
+            case 8: 
+                data = stepEightValidateAndGetData();
+                if (!data.err) {
+                    userData.step++;
+                    stepChooser();
+                }
+                break;
+            case 9: 
+                data = stepNineValidateAndGetData();
+                userData.step++;
+                stepChooser();
+                break;
+            case 10: 
+                data = stepTenValidateAndGetData();
+                userData.step++;
+                stepChooser();
+                break;
+            case 11: 
+                data = stepElevenValidateAndGetData();
+                userData.step++;
+                stepChooser();
+                break;
+            case 12: 
+                data = stepTwelveValidateAndGetData();
+                userData.step++;
+                stepChooser();
+                break;
+            case 13: 
+                data = stepThirteenValidateAndGetData();
                 userData.step++;
                 stepChooser();
                 break;
@@ -100,17 +148,42 @@ window.addEventListener('load', ()=>{
                 stepOne(constants, userData);
                 break;
             case 2:
-                stepTwo(constants);
+                stepTwo();
                 constants.nextButton.textContent = 'Добавяне на опции';
                 break;
             case 3:
-                stepThree(constants, userData);
+                stepThree(userData);
                 break;
             case 4:
-                stepFour(constants, userData);
+                stepFour(userData);
                 break;
             case 5:
-                stepFive(constants, userData);
+                stepFive(userData);
+                break;
+            case 6:
+                stepSix(userData);
+                break;
+            case 7:
+                stepSeven(userData);
+                break;
+            case 8:
+                stepEight(userData);
+                break;
+            case 9:
+                stepNine(userData);
+                break;
+            case 10:
+                stepTen(userData);
+                break;
+            case 11:
+                stepEleven(userData);
+                break;
+            case 12:
+                stepTwelve(userData);
+                break;
+            case 13:
+                stepThirteen(userData);
+                constants.nextButton.textContent = 'Приключи и виж новата си клауза!';
                 break;
             default:
                 console.log('err');

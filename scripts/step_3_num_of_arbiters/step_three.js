@@ -1,4 +1,4 @@
-function stepThree(constants, userData){
+function stepThree(userData){
     clearPage();
 
     //Radio buttons
@@ -55,6 +55,8 @@ function stepThree(constants, userData){
             ],
              'blank'
         ];
+
+
     }
     else if (userData.typeOfArgument === 'domain') {
         description = 
@@ -87,76 +89,53 @@ function stepThree(constants, userData){
     fillPage(title, description);
     insertBlankSpace();
 
-        radioButton4 = document.querySelector('#money');
 
-        if (radioButton4) {
-            radioButton4.parentElement.parentElement.addEventListener('click', (e)=>{
-                priceInput = document.querySelector('#amount');
+    if (userData.typeOfArgument === 'business') {
+        enableOnClickEvent('money', ['amount']);
+    }
 
-                if (e.target === radioButton4 || radioButton4.checked) {
-                    priceInput.disabled = false;
-                    priceInput.focus();
-                }else{
-                    priceInput.disabled = true;
-                }
-            });
-        }
+    let radioButtons = {
+        silent: null, 
+        oneArbiter: null,
+        threeArbiters: null,
+        money: ['amount']
+    }
 
+    setValues(userData, 'howManyArbiters', radioButtons);
 
-    (function setValues(userData){
-        let types = [
-            'howManyArbiters'
-        ]
+    // (function setValues(userData){
+    //     let types = [
+    //         'howManyArbiters'
+    //     ]
         
     
-        for (const type of types) {
-            if (userData[type]) {
-                if (userData[type] === 'money' && userData['typeOfArgument'] === 'business') {
-                    document.querySelector(`#${userData[type]}`).checked = true;
-                    let priceInput = document.querySelector(`#amount`);
-                    priceInput.value = userData.amount;
-                    priceInput.disabled = false;
-                    priceInput.focus();
-                }else if (userData[type] != 'money') {
-                    document.querySelector(`#${userData[type]}`).checked = true;
-                }
-            }
-        }
-    })(userData);
+    //     for (const type of types) {
+    //         if (userData[type]) {
+    //             if (userData[type] === 'money' && userData['typeOfArgument'] === 'business') {
+    //                 document.querySelector(`#${userData[type]}`).checked = true;
+    //                 let priceInput = document.querySelector(`#amount`);
+    //                 priceInput.value = userData.amount;
+    //                 priceInput.disabled = false;
+    //                 priceInput.focus();
+    //             }else if (userData[type] != 'money') {
+    //                 document.querySelector(`#${userData[type]}`).checked = true;
+    //             }
+    //         }
+    //     }
+    // })(userData);
+
 }
 
 function stepThreeValidateAndGetData(){
     let data = {
-        howManyArbiters:null,
-        amount:null,
+        howManyArbiters:null
+    }
+    let radioButtons = {
+        silent: null, 
+        oneArbiter: null,
+        threeArbiters: null,
+        money: ['amount']
     }
 
-
-    let err = false;
-     let radio = document.getElementsByName(Object.keys(data)[0]);
-
-     for (const butt of radio) {
-         if (butt.checked) {
-             data[Object.keys(data)[0]] = butt.id;
-             break;
-         }
-     }
-
-    if (data[Object.keys(data)[0]] === "money") {
-        let moneyInput = document.querySelector('#amount');
-
-        if (moneyInput.value && !isNaN(moneyInput.value) && Number(moneyInput.value) > 1) {
-            data[Object.keys(data)[1]] = moneyInput.value;
-        }else{
-        if (!document.querySelector('.error')) {
-            insertParagraph('Моля, въведете валидна стойност или изберете друга опция преди да продължите.', 'error', 'error')
-        }
-            err = true;
-        }
-    }
-
- data.err = err;
-
- return data;
-
+    return validateMiltipleInputRadios(data, radioButtons);
 }
