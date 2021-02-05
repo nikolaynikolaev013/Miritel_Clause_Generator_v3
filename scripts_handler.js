@@ -1,7 +1,8 @@
 window.addEventListener('load', ()=>{
     const constants = {
         backButton: document.querySelector('#back'),
-        nextButton: document.querySelector('#next')
+        nextButton: document.querySelector('#next'),
+        clausePreview: document.querySelector('.clausePreviewDiv')
     }
 
     let userData = {
@@ -27,6 +28,7 @@ window.addEventListener('load', ()=>{
 
             userData = setCookie(data, userData);
             updateSidebar(userData);
+            resetButtons(constants);
             stepChooser();
         }
     });
@@ -208,6 +210,7 @@ window.addEventListener('load', ()=>{
             case 14:
                 stepFourteen(userData);
                 constants.nextButton.style.display = 'none';
+                constants.clausePreview.style.display = 'none';
                 break;
             default:
                 console.log('err');

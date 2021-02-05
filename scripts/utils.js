@@ -151,7 +151,19 @@ function resetButtons(constants){
     constants.nextButton.style.display = '';
     constants.backButton.textContent = 'Назад';
     constants.backButton.style.display = '';
+    document.querySelector('.clausePreviewDiv').style.display = '';
 }
+
+function copyToClipboard() {
+    let clause = document.getElementById("clausePreview");
+
+    window.navigator.clipboard.writeText(clausePreview.innerText);
+
+    document.getElementById('copy_button').style.backgroundColor= "green";
+    document.getElementById('copy_button').innerHTML = "Клаузата беше копирана успешно.";
+
+}
+
 function setCookie(newData, oldData){
     let mergedData = {
         ...oldData,
