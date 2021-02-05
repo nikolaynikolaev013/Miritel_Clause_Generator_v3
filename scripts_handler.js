@@ -33,7 +33,14 @@ window.addEventListener('load', ()=>{
 
     constants.backButton.addEventListener('click', () => {
         if (userData.step > 0) {
-            userData.step--;
+            if (userData.typeOfArgument === 'domain' && userData.step === 11) {
+                userData.step = 4;
+            }else if (userData.typeOfArgument === 'domain' && userData.step === 14) {
+                userData.step = 11;
+            }
+            else{
+                userData.step--;
+            }
             resetButtons(constants);
 
             setCookie(userData, null);
@@ -48,7 +55,7 @@ window.addEventListener('load', ()=>{
 
         let data = null;
 
-        
+
 
         switch (userData.step) {
             case 0:
@@ -77,7 +84,12 @@ window.addEventListener('load', ()=>{
                 break;
             case 4: 
                 data = stepFourValidateAndGetData();
-                userData.step++;
+
+                if (userData.typeOfArgument === 'domain') {
+                    userData.step = 11;
+                }else{
+                    userData.step++;
+                }
                 stepChooser();
                 break;
             case 5: 
@@ -118,16 +130,24 @@ window.addEventListener('load', ()=>{
                 break;
             case 11: 
                 data = stepElevenValidateAndGetData();
-                userData.step++;
+                if (userData.typeOfArgument === 'domain') {
+                    userData.step = 14;
+                }else{
+                    userData.step++;
+                }
                 stepChooser();
                 break;
             case 12: 
                 data = stepTwelveValidateAndGetData();
                 userData.step++;
-                stepChooser();
                 break;
             case 13: 
                 data = stepThirteenValidateAndGetData();
+                userData.step++;
+                stepChooser();
+                break;
+            case 14: 
+                //data = stepThirteenValidateAndGetData();
                 userData.step++;
                 stepChooser();
                 break;
@@ -184,6 +204,10 @@ window.addEventListener('load', ()=>{
             case 13:
                 stepThirteen(userData);
                 constants.nextButton.textContent = 'Приключи и виж новата си клауза!';
+                break;
+            case 14:
+                stepFourteen(userData);
+                constants.nextButton.style.display = 'none';
                 break;
             default:
                 console.log('err');

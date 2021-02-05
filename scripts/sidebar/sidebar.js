@@ -44,13 +44,14 @@ function updateSidebar(userData){
             "Приложимо право", "Откритие", "Документи само за изслушване", "Продължителност на арбитражното производство",
             "Оценка на форумните такси и адвокатските такси",
             "Становище, придружаващо наградата", "Поверителност", "Неплащане на арбитражни разходи",
-            "Обжалване"
+            "Обжалване", "Финал"
         ];
     }else if (userData.typeOfArgument === "domain") {
         availableOptions = 
         [
-            "Добре дошли!", "Тип клауза", "Вашата клауза", "Брой арбитри", "Квалификация на арбитраж",
-            "Поверителност"
+            "Добре дошли!", "Тип клауза", "Вашата клауза", "Брой арбитри", "Квалификации на арбитраж",
+            "", "", "", "","", "", "Поверителност", "",
+            "", "Финал"
         ];
     }
 
@@ -65,6 +66,12 @@ function updateSidebar(userData){
 
     let counter = 0;
     for (const option of availableOptions) {
+
+        if (option === "") {
+            counter++;
+            continue;
+        }
+
         let newLiEl = document.createElement('li');
         let newIEl = document.createElement('i');
 
@@ -73,9 +80,11 @@ function updateSidebar(userData){
         
         newLiEl.innerHTML = `${newIEl.outerHTML} ${option}`;
 
+        //setting the class for current item page
         if (counter === userData.step) {
             newLiEl.classList.add('curr-item');
         }else{
+            //setting the exception disabled button if type of argument on step 2 is not choosen yet
             if (userData.step === 0 && !userData.typeOfArgument
                 || (counter === 2 && !userData.typeOfArgument)) {
                 newLiEl.classList.add('disabled');

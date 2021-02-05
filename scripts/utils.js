@@ -42,7 +42,6 @@ function fillPage(mainTitle, mainDescription){
 
     }
 }
-
 function insertBlankSpace(multiplier = 1){
     for (let i = 0; i < multiplier; i++) {
         let descriptionUl = document.querySelector('.description');
@@ -51,7 +50,6 @@ function insertBlankSpace(multiplier = 1){
         descriptionUl.appendChild(newBr);
     }
 }
-
 function insertParagraph(content, pClass, id){
     let descriptionUl = document.querySelector('.description');
 
@@ -148,12 +146,12 @@ function clearPage(){
     title.textContent = '';
 
 }
-
 function resetButtons(constants){
     constants.nextButton.textContent = 'Напред';
+    constants.nextButton.style.display = '';
     constants.backButton.textContent = 'Назад';
+    constants.backButton.style.display = '';
 }
-
 function setCookie(newData, oldData){
     let mergedData = {
         ...oldData,
