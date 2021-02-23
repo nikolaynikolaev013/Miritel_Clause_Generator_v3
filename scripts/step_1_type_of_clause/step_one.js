@@ -43,6 +43,7 @@ function stepOne(constants, userData){
 
     fillPage(title, description);
 
+
     (function setValues(userData){
         let types = [
             'typeOfArgument',

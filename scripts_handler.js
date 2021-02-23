@@ -11,6 +11,7 @@ window.addEventListener('load', ()=>{
     
     userData = getCookie(userData);
     generateSidebar(userData);
+    generateClause(userData);
     stepChooser();
 
     let sidebarUl = document.querySelector('.sidebar_ul');
@@ -46,6 +47,7 @@ window.addEventListener('load', ()=>{
             resetButtons(constants);
 
             setCookie(userData, null);
+            generateClause(userData);
             updateSidebar(userData);
             stepChooser();
         }
@@ -56,8 +58,6 @@ window.addEventListener('load', ()=>{
         resetButtons(constants);
 
         let data = null;
-
-
 
         switch (userData.step) {
             case 0:
@@ -78,6 +78,7 @@ window.addEventListener('load', ()=>{
                 stepChooser();
                 break;
             case 3: 
+            
                 data = stepThreeValidateAndGetData();
                 if (!data.err) {
                     userData.step++;
@@ -142,6 +143,7 @@ window.addEventListener('load', ()=>{
             case 12: 
                 data = stepTwelveValidateAndGetData();
                 userData.step++;
+                stepChooser();
                 break;
             case 13: 
                 data = stepThirteenValidateAndGetData();
@@ -157,6 +159,17 @@ window.addEventListener('load', ()=>{
 
         updateSidebar(userData);
         userData = setCookie(data, userData);
+        generateClause(userData);
+
+
+        if (userData.step === 2) {
+            if (userData.typeOfArgument === 'domain' && 
+                userData.timeOfArgument === 'current') {
+                    
+                constants.nextButton.style.display = 'none';
+                generateFormRadioButtons(userData);
+            }
+        }
     });
 
 
@@ -165,12 +178,14 @@ window.addEventListener('load', ()=>{
         switch (userData.step) {
             case 0:
                 stepZero(constants, userData);
+                constants.clausePreview.style.display = 'none';
                 break;
             case 1:
                 stepOne(constants, userData);
+                constants.clausePreview.style.display = 'none';
                 break;
             case 2:
-                stepTwo();
+                stepTwo(userData);
                 constants.nextButton.textContent = 'Добавяне на опции';
                 break;
             case 3:

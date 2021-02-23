@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Miritel Clause Generator</title>
     <script src="https://kit.fontawesome.com/c16588db39.js" crossorigin="anonymous"></script>
-    
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
 	
 	<script src='scripts/sidebar/sidebar.js'></script>
 	<script src='scripts/utils.js'></script>
@@ -25,6 +25,7 @@
 	<script src='scripts/step_12_non_payment/step_twelve.js'></script>
 	<script src='scripts/step_13_appeal/step_thirteen.js'></script>
 	<script src='scripts/step_14_finale/step_fourteen.js'></script>
+	<script src='scripts/clause_generator.js'></script>
 	<script src='scripts/file_saver.js'></script>
 
 
@@ -63,7 +64,7 @@
 				<div class="clausePreviewDiv"> Как изглежда Вашата клауза до тук: 
 					<div style="display:flex;">
 						<div class="clausePreview" id="clausePreview">
-							<i> Тук ще стои клаузата, генерирана до момента. </i>
+							
 						</div>
 						
 						<button id="copy_button" class="copy_button" onclick="copyToClipboard(this)">Копирай клаузата</button>

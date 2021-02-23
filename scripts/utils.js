@@ -96,6 +96,16 @@ function createInputfield(id, name, placeholder, className, newValue){
     newInput.placeholder = placeholder;
     return newInput;
 }
+function createLabel(htmlFor, content, id){
+    let newLabel = document.createElement('label');
+    newLabel.htmlFor = htmlFor;
+    newLabel.innerHTML = content;
+    if (id) {
+        newLabel.id = id;
+    }
+
+    return newLabel;
+}
 function createParagraph(content, pClass, id){
     let newP = document.createElement('p');
     newP.innerHTML = content;
@@ -147,13 +157,26 @@ function clearPage(){
 
 }
 function resetButtons(constants){
-    constants.nextButton.textContent = 'Напред';
-    constants.nextButton.style.display = '';
-    constants.backButton.textContent = 'Назад';
-    constants.backButton.style.display = '';
-    document.querySelector('.clausePreviewDiv').style.display = '';
-}
+    let nextButton = constants.nextButton;
+    if (nextButton) {
+        nextButton.textContent = 'Напред';
+        nextButton.style.display = '';
+    }
+    
+    let backButton = constants.backButton;
+    if (backButton) {
+        backButton.textContent = 'Назад';
+        backButton.style.display = '';
+    }
 
+    let clausePreviewEl = document.querySelector('.clausePreviewDiv');
+    if (clausePreviewEl) {
+        clausePreviewEl.style.display = '';
+
+        let mainContentEl = document.querySelector('.main-content');
+        mainContentEl.appendChild(clausePreviewEl);
+    }
+}
 function copyToClipboard() {
     let clause = document.getElementById("clausePreview");
 
