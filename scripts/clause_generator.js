@@ -47,41 +47,45 @@ function generateClause(userData){
             return `Такъв отказ не позволява да се постанови съдебно решение срещу неплащащата страна при липса на представени доказателства, както е предвидено по-горе.`;
         }else if (userData.appealChoice === 'second') {
             return `Такъв отказ не позволява да се постанови съдебно решение срещу неплащащата страна при липса на представени доказателства, както е предвидено по-горе.`;
+        }else{
+            return '';
         }
     }
     function clauseForStepTwelve(){
-        if (userData.nonPaymentChoice === 'first') {
-            return ``;
-        }else if (userData.nonPaymentChoice === 'second') {
+        // for -> userData.nonPaymentChoice === 'first' => return ``;
+        if (userData.nonPaymentChoice === 'second') {
             return `Страните се споразумяват, че неизпълнението или отказът на страна да плати необходимия си 
             дял от депозитите за арбитражно обезщетение или административни такси представлява отказ от тази 
             страна за представяне на доказателства или кръстосан разпит на свидетел. В такъв случай от другата 
             страна се изисква да представи доказателства и правни аргументи, каквито арбитърът (арбитрите) 
             може да изиска за постановяване на решение.`;
+        }else{
+            return '';
         }
     }
     function clauseForStepEleven(){
-        if (userData.confChoice === 'first') {
-            return ``;
-        }else if (userData.confChoice === 'second') {
+        //for -> userData.confChoice === 'first') => return ``;
+        if (userData.confChoice === 'second') {
             return `Освен ако това може да се изисква от закона, нито една от страните, нито арбитър не може 
             да разкрива съществуването, съдържанието или резултатите от какъвто и да е арбитраж по настоящото
              споразумение без предварителното писмено съгласие на двете страни.`;
+        }else{
+            return '';
         }
     }
     function clauseForStepTen(){
-        if (userData.opinion === 'first') {
-            return ``;
-        }else if (userData.opinion === 'second') {
+        //for -> userData.opinion === 'first') => return ``;
+        if (userData.opinion === 'second') {
             return `Арбитрите могат да определят как разходите и разходите по арбитража ще бъдат разпределени 
             между страните, но те не присъждат адвокатски хонорари. Решението на арбитрите се придружава от 
             мотивирано становище.`;
+        }else{
+            return '';
         }
     }
     function clauseForStepNine(){
-        if (userData.fees === 'prevailing') {
-            return ``;
-        }else if (userData.fees === 'second') {
+        //for -> userData.fees === 'prevailing')=> return ``;
+        if (userData.fees === 'second') {
             return `Съгласно Правилата за търговски арбитраж.`;//TODO?
         }else if (userData.fees === 'third') {
             return `Арбитърът (арбитрите) ще присъди на преобладаващата страна, ако има такива, определени от 
@@ -93,18 +97,21 @@ function generateClause(userData){
             return ``;//TODO
         }else if (userData.fees === 'fifth') {
             return ``;//TODO
+        }else{
+            return '';
         }
     }
     function clauseForStepEight(){
-        if (userData.durationChoice === 'silent') {
-            return ``;
-        }else if (userData.durationChoice === 'customDuration') {
+        //for -> userData.durationChoice === 'silent') => return ``;
+        if (userData.durationChoice === 'customDuration') {
             return `Решението се извършва в рамките на ${userData.duration} ${userData.duration === '1' ? 'месец' : 'месеца'} от подаването на съобщението за намерение за 
             арбитраж (искане) и арбитърът (арбитрите) се съгласяват да спазват този график, преди да приемат назначението. Този срок обаче може да бъде удължен от арбитъра поради добра причина,`;
         }else if (userData.durationChoice === 'ninetyDays') {
             return `Времето е от съществено значение за всеки арбитраж по това споразумение и арбитражните
              изслушвания ще се проведат в рамките на 90 дни от подаването и присъдите, постановени в рамките
               на 120 дни. Арбитърът/ите се съгласяват с тези ограничения преди да приемат назначението.`;
+        }else{
+            return '';
         }
     }
     function clauseForStepSeven(){
@@ -112,12 +119,13 @@ function generateClause(userData){
             return `Изслушванията ще се проведат в съответствие със стандартните процедури от Правилата за търговски арбитраж, които предвиждат лично изслушване.`;
         }else if (userData.documentsChoice === 'basedOnSubmission') {
             return `Арбитражът ще се основава на подаването на документи и няма да има лично или устно изслушване.`;
+        }else{
+            return '';
         }
     }
     function clauseForStepSix(){
-        if (userData.discovery === 'silent') {
-            return '';
-        }else if (userData.discovery === 'countryChoice') {
+        //for -> userData.discovery === 'silent') => return '';
+        if (userData.discovery === 'countryChoice') {
             return `Депозитите са ограничени до максимум ${userData.numOfDeposits} на страна и се провеждат в рамките на ${userData.numOfDays} дни след отправяне на искане. Допълнителни депозити могат да бъдат насрочени само с разрешение
             на арбитрите и с добра причина, посочена. Всяко отлагане е ограничено до максимум ${userData.numOfHours} часа.`;
         }else if (userData.discovery === 'sideToSide') {
@@ -126,33 +134,38 @@ function generateClause(userData){
         }else if (userData.discovery === 'last') {
             return `Ако спорът е по-малък от ${userData.lessThanAmount}, няма да има друго откритие освен обмен на документи.
              Ако спорът е над ${userData.moreТhan}, откриването се състои от не повече от ${userData.numOfDepositions} депозита от ${userData.number} или по-малко.`;
+        }else{
+            return '';
         }
     }
     function clauseForStepFive(){
-        if (userData.governingLawChoice === 'silent') {
-            return '';
-        }else if (userData.governingLawChoice === 'country') {
+        //for -> userData.governingLawChoice === 'silent') => return '';
+        if (userData.governingLawChoice === 'country') {
             return `Арбитражът се урежда от законите на държавата ${userData.countryInput}.`;
+        }else{
+            return '';
         }
     }
     function clauseForStepFour(){
-        if (userData.qualification === 'silent') {
-            return '';
-        }else if (userData.qualification === 'arbiter') {
+        //for -> userData.qualification === 'silent') => return '';
+        if (userData.qualification === 'arbiter') {
             return `Арбитърът е ${userData.selectedArbiter}.`;
+        }else{
+            return '';
         }
     }
 
     function clauseForStepThree(){
-        if (userData.howManyArbiters === 'silent') {
-            return '';
-        }else if (userData.howManyArbiters === 'oneArbiter') {
+        //for -> userData.howManyArbiters === 'silent') => return '';
+        if (userData.howManyArbiters === 'oneArbiter') {
             return `Исковете се разглеждат от един арбитър.`;
         }else if (userData.howManyArbiters === 'threeArbiters') {
             return `Исковете се разглеждат от състав от трима арбитри.`;
         }else if (userData.howManyArbiters === 'money') {
             return `Исковете се разглеждат от един арбитър, освен ако искът надвишава ${userData.amount} лв.,
              като в този случай спорът се разглежда от комисия от трима арбитри.`;
+        }else{
+            return '';
         }
     }
     
@@ -171,6 +184,8 @@ function generateClause(userData){
                 Ако такъв спор не бъде разрешен чрез медиация, 
                 ние се съгласяваме да се подложим на арбитраж, администриран от Мирител ЕООД съгласно нейните правила за търговски арбитраж. Освен това се съгласяваме, 
                 че решението на всеки компетентен съд може да бъде вписано при присъждането.`
+            }else{
+                return '';
             }
         }else{
             if (userData.procedureFormat === 'arbitrage') {
@@ -186,6 +201,8 @@ function generateClause(userData){
                 да се подложим на арбитраж, администриран от Мирител ЕООД съгласно нейните 
                 правила за търговски арбитраж. Освен това се съгласяваме, че решението на всеки компетентен съд 
                 може да бъде вписано при присъждането.`
+        }else{
+            return ''
         }
     }
 }
