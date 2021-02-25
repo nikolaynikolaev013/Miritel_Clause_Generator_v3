@@ -1,0 +1,65 @@
+* {
+  font-family: "Source Code Pro", monospace;
+  background-color: #bee9e8;
+  list-style: none;
+}
+body {
+  display: block;
+  text-align: center;
+}
+#wrapper {
+  padding: 0 20px 20px 0;
+  margin: 10px auto;
+  width: 40%;
+  display: inline-block;
+  border: 1.5px solid black;
+  border-radius: 20px;
+  text-align: center;
+}
+
+#description {
+  animation: 0.75s ease-in-out 0s 1 PopUp;
+}
+
+@keyframes PopUp {
+  0% {
+    font-size: 16px;
+  }
+  50% {
+    font-size: 18px;
+  }
+  100% {
+    font-size: 16px;
+  }
+}
+
+.button {
+  background-color: #62b6cb;
+  color: #bee9e8;
+  padding: 5px;
+  margin: 5px;
+  min-width: 30%;
+  border-radius: 5px;
+  font-size: 17px;
+  transition-duration: 0.5s;
+}
+.button:hover {
+  background-color: #bdd6d6;
+  color: #646a6b;
+  font-size: 18px;
+}
+#thank-you-title {
+  display: none;
+  font-weight: 100;
+  font-style: italic;
+}
+#email-sent-title {
+  display: none;
+  font-weight: 100;
+}
+
+@media only screen and (max-width: 1000px) {
+  #wrapper {
+    width: 80%;
+  }
+}

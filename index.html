@@ -8,6 +8,7 @@
     <script src="https://smtpjs.com/v3/smtp.js"></script>
 	
 	<script src='scripts/sidebar/sidebar.js'></script>
+	<script src='scripts/sidebar/sidebar_burger.js'></script>
 	<script src='scripts/utils.js'></script>
     <script src='scripts_handler.js'></script>
 	<script src='scripts/step_0_welcome/step_zero.js'></script>
@@ -30,23 +31,30 @@
 
 
 	<link rel="stylesheet" href="styles.css">
-	<link rel="stylesheet" href="sidebar/sidebar_styles.css">
+	<link rel="stylesheet" href="scripts/sidebar/sidebar_styles.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
 	<link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet">
 </head>
 <body>
 	<div class="wrapper">
 
-		<div class="sidebar">
+		<div class="menu-btn">
+			<div class="menu-btn__burger"></div>
+		  </div>
+
+
+		<div class="sidebar animate__animated animate__backInDown animate__faster">
 			
 		</div>
-			<div class="main-content">
+		
+		<div class="main-content">
 			<a href="https://miritel.bg"><img class="logo" src="img/Miritel_logo.png" alt="Miritel Logo"></a>
             
 		<h2 class="big-title-text"></h2>
 		<br>
 
-        <ul class="description">
+        <ul class="description ">
 			<br>
         </ul>
 
@@ -61,8 +69,8 @@
 		</br>
 		</br>
 
-				<div class="clausePreviewDiv"> Как изглежда Вашата клауза до тук: 
-					<div style="display:flex;">
+				<div class="clausePreviewDiv animate__animated  animate__backInRight animate__faster"> Как изглежда Вашата клауза до тук: 
+					<div class="wrapper">
 						<div class="clausePreview" id="clausePreview">
 							
 						</div>

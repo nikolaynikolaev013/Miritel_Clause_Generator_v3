@@ -111,6 +111,17 @@ li {
   text-decoration: underline !important;
 }
 
+.clausePreview {
+  border: 1.5px solid #000000;
+  margin: 3px;
+  padding: 10px;
+  width: 80%;
+}
+
+.wrapper {
+  display: flex;
+}
+
 .copy_button {
   background-color: #62b6cb;
   color: #bee9e8;
@@ -127,11 +138,49 @@ li {
   border-radius: 10px;
 }
 
-.clausePreview {
-  border: 1.5px solid #000000;
-  margin: 3px;
-  padding: 10px;
+.formRadioButtons {
+  text-align: center;
+}
+
+.form {
+  display: flex;
+}
+
+.form > div {
+  display: block;
+  padding: 5px;
+  width: 31%;
+  height: 300px;
+  margin: 10px;
+  border: 1.5px solid black;
+  border-radius: 20px;
+  text-align: center;
+}
+
+.form > div label {
+  display: inline-block;
+  float: left;
+  clear: left;
+  width: 100%;
+  text-align: center;
+  margin-top: 15px;
+}
+
+.form > div input {
+  display: block;
+  margin: 0 auto;
   width: 80%;
+}
+
+.form-footer * {
+  text-align: center;
+  display: block;
+  margin: 10px auto;
+  width: 400px;
+}
+
+.sent-status-text {
+  color: green;
 }
 
 @media only screen and (min-width: 1000px) {
@@ -144,5 +193,34 @@ li {
 
   .container {
     text-align: center;
+  }
+}
+
+@media only screen and (max-width: 840px) {
+  .main-content {
+    margin: auto;
+    align-content: center;
+  }
+
+  .container {
+    text-align: center;
+  }
+
+  .clausePreviewDiv {
+    padding: 10px;
+    display: block;
+    text-align: center;
+  }
+  .wrapper {
+    display: block;
+  }
+  .clausePreview {
+    width: 95%;
+    margin: auto;
+    text-align: center;
+  }
+  .copy_button {
+    font-size: 20px;
+    width: 65%;
   }
 }

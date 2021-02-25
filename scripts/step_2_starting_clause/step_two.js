@@ -131,15 +131,21 @@ function validateAndSend(userData){
         errorStatusText.style.display = 'none';
     }
 
+    let receiverAcceptButtonUrl = 
+        `https://myclause.miritel.bg/accept_arbitrage/index.html?domain=${domainName}&domainNumber=${registrationNumber}&domainDate=${registrationDate}&senderNames=${senderNames}&senderEGN=${senderEGN ? senderEGN : ''}&senderEmail=${senderEmail}&receiverNames=${receiverNames}&receiverEmail=${receiverEmail}&description=${problemDesc}`
+    let receiverEmailContent = 
+    `Здравейте, ${receiverNames}!<br><br>
+        ${senderNames} желае да разрещи спор с Вас чрез ${typeOfSolve}. <br>
+        Описание на спора: ${problemDesc}<br>
+        Ако сте съгласни, моля потвърдете тук:
+        <a href='${receiverAcceptButtonUrl}' target='_blank'>Потвърждавам!</a>`
+
     Email.send({
         SecureToken : "76bb458d-36ab-413b-aeb8-be7a575da621",
         To : `${receiverEmail}`,
         From : "medarb@miritel.bg",
         Subject : "Потвърждение за разрешаване на спор",
-        Body : `Здравейте, ${receiverNames}!<br><br>
-        ${senderNames} желае да разрещи спор с Вас чрез ${typeOfSolve}. <br>
-        Описание на спора: ${problemDesc}<br>
-        Ако сте съгласни, моля потвърдете тук:`
+        Body : receiverEmailContent
     }).then(
     );
 
@@ -170,18 +176,36 @@ function validateAndSend(userData){
         sentStatusText.style.display = ''
     );
 
+    let formRadioButtons = document.querySelector('.formRadioButtons');
+    let descriptionEl = document.querySelector('.description');
+    let form = document.querySelector('.form');
+    let formFooterEl = document.querySelector('.form-footer');
+    let sendButton = document.querySelector('#send-email-button');
+
+    if (formRadioButtons) {
+        descriptionEl.removeChild(formRadioButtons);
+    }
+    if (form) {
+        descriptionEl.removeChild(form);
+    }
+    if (sendButton) {
+        formFooterEl.removeChild(sendButton);
+    }
+
+
 }
 
 function generateFormRadioButtons(userData){
 
     let descriptionEl = document.querySelector(".description");
 
+    let radioButtonsDiv = document.createElement('div');
+
     let sendTheClauseTitle = document.createElement('h2');
     sendTheClauseTitle.textContent = "Изпращане на клаузата по имейл";
-    descriptionEl.appendChild(sendTheClauseTitle);
+    radioButtonsDiv.appendChild(sendTheClauseTitle);
             
     //radio buttons
-    let radioButtonsDiv = document.createElement('div');
     radioButtonsDiv.classList.add("formRadioButtons");
 
     let personRadioButt = createRadioButton('Частно лице', 'person', 'personOrBusiness');
@@ -208,6 +232,11 @@ function generateForm(userData, descriptionEl, type){
         descriptionEl.removeChild(oldFormEl);
     }
 
+    let oldFormFooter = document.querySelector('.form-footer');
+    if (oldFormFooter) {
+        descriptionEl.removeChild(oldFormFooter);
+    }
+
     let formDiv = document.createElement('div');
     formDiv.classList.add('form');
 
@@ -220,27 +249,32 @@ function generateForm(userData, descriptionEl, type){
     let receiverDiv = createReceiverDiv();
     formDiv.appendChild(receiverDiv);
 
+    let formFooter = document.createElement('div');
+    formFooter.classList.add('form-footer');
+
     let sentStatusText = document.createElement('h4');
-    sentStatusText.textContent = 'Имейлът беше изпратен успешно!';
+    sentStatusText.textContent = 'Имейлът беше изпратен успешно.';
     sentStatusText.classList.add('sent-status-text');
     sentStatusText.id = 'sent-status-text';
     sentStatusText.style.display = 'none';
-    formDiv.appendChild(sentStatusText);
+    formFooter.appendChild(sentStatusText);
 
     let errorStatusText = document.createElement('h4');
     errorStatusText.textContent = 'Моля въведете валидни стойности в полетата с червено.'
     errorStatusText.classList.add('error');
     errorStatusText.id = 'errorStatusText';
     errorStatusText.style.display = 'none';
-    formDiv.appendChild(errorStatusText);
+    formFooter.appendChild(errorStatusText);
 
     formDiv.appendChild(document.createElement('br'));
     let sendButton = document.createElement('button');
     sendButton.textContent = "Изпрати!";
     sendButton.classList.add('button');
     sendButton.id = 'send-email-button';
-    formDiv.appendChild(sendButton);
+    formFooter.appendChild(sendButton);
+
     descriptionEl.appendChild(formDiv);
+    descriptionEl.appendChild(formFooter);
 
     sendButton.addEventListener('click', (e)=>{
         if (e.target.id === 'send-email-button') {
@@ -257,15 +291,19 @@ function createDomainInfoDiv(){
     titleEl.textContent = 'Информация за домейна';
     domainInfoDiv.appendChild(titleEl);
 
+    let domainNameDiv = document.createElement('div');
     let domainNameLabel = createLabel('domainName', 'Домейн: ', 'domainNameInputLabel');
     let domainNameInput = createInputfield('domainName', 'domainName', '', 'domainNameInput', '');
-    domainInfoDiv.appendChild(domainNameLabel);
-    domainInfoDiv.appendChild(domainNameInput);
+    domainNameDiv.appendChild(domainNameLabel);
+    domainNameDiv.appendChild(domainNameInput);
+    domainInfoDiv.append(domainNameDiv);
 
+    let registrationNumberDiv = document.createElement('div');
     let registrationNumberLabel = createLabel('registrationNumber', 'Номер на заявката за регистрация: ', 'registrationNumberLabel');
     let registrationNumberInput = createInputfield('registrationNumber', 'registrationNumber', '', 'registrationNumberInput', '');
-    domainInfoDiv.appendChild(registrationNumberLabel);
-    domainInfoDiv.appendChild(registrationNumberInput);
+    registrationNumberDiv.appendChild(registrationNumberLabel);
+    registrationNumberDiv.appendChild(registrationNumberInput);
+    domainInfoDiv.append(registrationNumberDiv);
 
     //get current date
     let today = new Date();
@@ -275,6 +313,7 @@ function createDomainInfoDiv(){
 
     currentDate = yyyy + '-' + mm + '-' + dd;
 
+    let registrationDateDiv = document.createElement('div');
     let registrationDateLabel = createLabel('registrationDateInput', 'Дата на заявката за регистрация: ', 'registrationDateInputLabel');
     let registrationDateInput = document.createElement('input');
     registrationDateInput.type = 'date';
@@ -284,8 +323,9 @@ function createDomainInfoDiv(){
     registrationDateInput.setAttribute('max', currentDate);
     registrationDateInput.value = currentDate;
 
-    domainInfoDiv.appendChild(registrationDateLabel);
-    domainInfoDiv.appendChild(registrationDateInput);
+    registrationDateDiv.appendChild(registrationDateLabel);
+    registrationDateDiv.appendChild(registrationDateInput);
+    domainInfoDiv.append(registrationDateDiv);
 
     return domainInfoDiv;
 }
@@ -299,25 +339,30 @@ function createSenderDiv(type){
     titleEl.textContent = 'Заявител';
     senderDiv.appendChild(titleEl);
 
-    
+    let senderFullNameDiv = document.createElement('div');
     let senderFullNameLabel = createLabel('senderFullName', 'Три имена: ', 'senderFullNameLabel');
     let senderFullName = createInputfield('senderFullName', 'senderFullName', '', 'senderFullNameInput', '');
-    senderDiv.appendChild(senderFullNameLabel);
-    senderDiv.appendChild(senderFullName);
+    senderFullNameDiv.appendChild(senderFullNameLabel);
+    senderFullNameDiv.appendChild(senderFullName);
+    senderDiv.appendChild(senderFullNameDiv);
 
     if (type === 'person') {
 
+        let senderEGNDiv = document.createElement('div');
         let senderEGNLabel = createLabel('senderEGN', 'ЕГН: ', 'senderEGNLabel');
         let senderEGN = createInputfield('senderEGN', 'senderEGN', '', 'senderEGNInput', '');
-        senderDiv.appendChild(senderEGNLabel);
-        senderDiv.appendChild(senderEGN);
+        senderEGNDiv.appendChild(senderEGNLabel);
+        senderEGNDiv.appendChild(senderEGN);
     
+        senderDiv.appendChild(senderEGNDiv)
     }
     
+    let senderEmailDiv = document.createElement('div');
     let senderEmailLabel = createLabel('senderEmail', 'Email: ', 'senderEmailLabel');
     let senderEmail = createInputfield('senderEmail', 'senderEmail', '', 'senderEmailInput', '');
-    senderDiv.appendChild(senderEmailLabel);
-    senderDiv.appendChild(senderEmail);
+    senderEmailDiv.appendChild(senderEmailLabel);
+    senderEmailDiv.appendChild(senderEmail);
+    senderDiv.appendChild(senderEmailDiv);
 
     return senderDiv;
 }
@@ -331,23 +376,30 @@ function createReceiverDiv(){
     titleEl.textContent = 'Насрещна страна';
     receiverDiv.appendChild(titleEl);
     
+    let receiverFullNameDiv = document.createElement('div');
     let receiverFullNameLabel = createLabel('receiverFullName', 'Три имена: ', 'receiverFullNameLabel');
     let receiverFullName = createInputfield('receiverFullName', 'receiverFullName', '', 'receiverFullNameInput', '');
-    receiverDiv.appendChild(receiverFullNameLabel);
-    receiverDiv.appendChild(receiverFullName);
-    
+    receiverFullNameDiv.appendChild(receiverFullNameLabel);
+    receiverFullNameDiv.appendChild(receiverFullName);
+    receiverDiv.appendChild(receiverFullNameDiv);
+
+    let receiverEmailDiv = document.createElement('div');
     let receiverEmailLabel = createLabel('receiverEmail', 'Email: ', 'receiverEmailLabel');
     let receiverEmail = createInputfield('receiverEmail', 'receiverEmail', '', 'receiverEmailInput', '');
-    receiverDiv.appendChild(receiverEmailLabel);
-    receiverDiv.appendChild(receiverEmail);
+    receiverEmailDiv.appendChild(receiverEmailLabel);
+    receiverEmailDiv.appendChild(receiverEmail);
+    receiverDiv.appendChild(receiverEmailDiv);
 
+    let descriptionElementDiv = document.createElement('div');
     let descriptionElementLabel = createLabel('descriptonElement', 'Описание на спора: ', 'descriptionElementLabel');
     let descriptonElement = document.createElement('textarea');
     descriptonElement.type = 'text';
     descriptonElement.name = 'descriptonElement';
     descriptonElement.id = 'descriptonElement';
-    receiverDiv.appendChild(descriptionElementLabel);
-    receiverDiv.appendChild(descriptonElement);
+    descriptionElementDiv.appendChild(descriptionElementLabel);
+    descriptionElementDiv.appendChild(descriptonElement);
+    receiverDiv.appendChild(descriptionElementDiv);
+
 
     return receiverDiv;
 }

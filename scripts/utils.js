@@ -39,8 +39,11 @@ function fillPage(mainTitle, mainDescription){
             newDescriptionLi.innerHTML = mainDescription[i];
             descriptionUl.appendChild(newDescriptionLi)
         }
-
     }
+
+    descriptionUl.classList.add('animate__animated');
+    descriptionUl.classList.add('animate__backInDown');
+    descriptionUl.classList.add('animate__faster');
 }
 function insertBlankSpace(multiplier = 1){
     for (let i = 0; i < multiplier; i++) {

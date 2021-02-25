@@ -1,4 +1,5 @@
 function generateSidebar(userData){
+    setBurgerButton();
     let sidebarEl = document.querySelector('.sidebar');
 
     let startOverButtonDiv = document.createElement('div');
