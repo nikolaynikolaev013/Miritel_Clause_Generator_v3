@@ -1,4 +1,23 @@
 
+const animateCSS = (element, animation, prefix = 'animate__') =>
+// We create a Promise and return it
+new Promise((resolve, reject) => {
+  const animationName = `${prefix}${animation}`;
+  const node = document.querySelector(element);
+
+  node.classList.add(`${prefix}animated`, animationName);
+  node.classList.add(`animate__faster`);
+
+  // When the animation ends, we clean the classes and resolve the Promise
+  function handleAnimationEnd(event) {
+    event.stopPropagation();
+    node.classList.remove(`${prefix}animated`, animationName);
+    node.classList.remove(`animate__faster`);
+    resolve('Animation ended');
+  }
+
+  node.addEventListener('animationend', handleAnimationEnd, {once: true});
+});
 function fillPage(mainTitle, mainDescription){
     let title = document.querySelector('.big-title-text');
     let descriptionUl = document.querySelector('.description');
@@ -41,9 +60,7 @@ function fillPage(mainTitle, mainDescription){
         }
     }
 
-    descriptionUl.classList.add('animate__animated');
-    descriptionUl.classList.add('animate__backInDown');
-    descriptionUl.classList.add('animate__faster');
+    descriptionUl.classList.add('animate__animated', 'animate__fadeIn');
 }
 function insertBlankSpace(multiplier = 1){
     for (let i = 0; i < multiplier; i++) {
@@ -158,6 +175,18 @@ function clearPage(){
     descriptionUl.parentElement.removeChild(descriptionUl);
     title.textContent = '';
 
+    let buttonsContainer = document.querySelector('.container');
+    let oldSendButton = document.querySelector('#send-email-button');
+    if (oldSendButton) {
+        buttonsContainer.removeChild(oldSendButton);
+    }
+
+    let downloadClauseButton = document.querySelector('#downloadButton');
+    if (downloadClauseButton) {
+        buttonsContainer.removeChild(downloadClauseButton);
+    }
+
+
 }
 function resetButtons(constants){
     let nextButton = constants.nextButton;
@@ -189,7 +218,6 @@ function copyToClipboard() {
     document.getElementById('copy_button').innerHTML = "Клаузата беше копирана успешно.";
 
 }
-
 function setCookie(newData, oldData){
     let mergedData = {
         ...oldData,
@@ -202,26 +230,6 @@ function setCookie(newData, oldData){
     return getCookie();
 
 }
-
-// function setValues(userData, inputs){
-//     for (const type of Object.keys(inputs)) {
-//         if (userData[type]) {
-
-//             document.querySelector(`#${userData[type]}`).checked = true;
-            
-//             if (inputs[type]) {
-//                 newSelectEl = document.querySelector(`#${inputs[type][0]}`);
-//                 newSelectEl.disabled = true;
-
-//                 if (inputs.hasOwnProperty(type)) {
-//                     newSelectEl.value = userData[inputs[type][1]];
-//                     newSelectEl.disabled = false;
-//                 }
-//             }
-//         }
-//     }
-// };
-
 function enableOnClickEvent(radioButtID, selectElIDs){
     let radio2 = document.querySelector(`#${radioButtID}`);
 
@@ -239,37 +247,6 @@ function enableOnClickEvent(radioButtID, selectElIDs){
         }
     });
 }
-
-// function validateSingleNumberInputOfARadioButton(data, radioValue, inputID){
-
-//     let err = false;
-//     let radio = document.getElementsByName(Object.keys(data)[0]);
-
-//     for (const butt of radio) {
-//         if (butt.checked) {
-//             data[Object.keys(data)[0]] = butt.id;
-//             break;
-//         }
-//     }
-
-//     if (data[Object.keys(data)[0]] === `${radioValue}`) {
-//         let moneyInput = document.querySelector(`#${inputID}`);
-
-//         if (moneyInput.value && !isNaN(moneyInput.value) && Number(moneyInput.value) > 1) {
-//             data[Object.keys(data)[1]] = moneyInput.value;
-//         }else{
-//             if (!document.querySelector('.error')) {
-//                 insertParagraph('Моля, въведете валидна стойност или изберете друга опция преди да продължите.', 'error', 'error')
-//             }
-//             err = true;
-//         }
-//     }
-
-//  data.err = err;
-
-//  return data;
-// }
-
 function setValues(userData, cookieMainName, radioButtonsInputs){
 
     for (const type in radioButtonsInputs) {
@@ -286,7 +263,6 @@ function setValues(userData, cookieMainName, radioButtonsInputs){
         }
     }
 }
-
 function validateSingleInputOfAllRadioButtons(data, radioValue, inputID){
 
     let err = false;
@@ -320,7 +296,6 @@ function validateSingleInputOfAllRadioButtons(data, radioValue, inputID){
 
     return data;
 }
-
 function validateSingleRadioButton(data, radioValue){
 
     let err = true;
@@ -444,7 +419,6 @@ function validateMiltipleInputRadios(data, radioButtons){
 
     // return data;
 }
-
 function getCookie(oldData){
     let cookie = document.cookie;
     let prefix = 'name=';

@@ -144,6 +144,7 @@ li {
 
 .form {
   display: flex;
+  justify-content: center;
 }
 
 .form > div {
@@ -183,6 +184,9 @@ li {
   color: green;
 }
 
+.container {
+  margin-left: 3%;
+}
 @media only screen and (min-width: 1000px) {
   .logo {
     width: 30%;
@@ -222,5 +226,21 @@ li {
   .copy_button {
     font-size: 20px;
     width: 65%;
+  }
+
+  .form {
+    display: block;
+  }
+  .form > div {
+    width: auto;
+    height: auto;
+    padding-bottom: 35px;
+  }
+  .form-footer * {
+    text-align: center;
+    display: block;
+    margin: 10px auto;
+    margin-bottom: -20px;
+    width: auto;
   }
 }

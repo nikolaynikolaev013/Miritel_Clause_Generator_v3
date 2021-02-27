@@ -1,4 +1,5 @@
 .sidebar {
+  display: block;
   position: fixed;
   width: 20%;
   height: 100%;
@@ -18,20 +19,20 @@
 
 .start_over_button_container {
   background-color: #62b6cb;
-  margin-top: 20px;
+  margin: 20px;
 }
 .start_over_button {
-  font-size: 17px !important;
+  font-size: 15px !important;
   transition-duration: 0.5s;
 }
 .start_over_button:hover,
 .start_over_button:hover * {
   background-color: #bdd6d6;
   color: #646a6b;
-  font-size: 19px !important;
+  font-size: 16px !important;
 }
 .sidebar:hover {
-  border-radius: 0 100px 100px 0;
+  border-radius: 0 80px 80px 0;
 }
 
 .sidebar h2 {
@@ -54,6 +55,7 @@
   transition-duration: 0.35s;
   transition-timing-function: ease-in-out;
   font-size: 13px;
+  cursor: pointer;
 }
 .far {
   background-color: #62b6cb;
@@ -71,6 +73,14 @@
   font-weight: bolder;
   font-size: 16px;
 }
+
+.final-clause {
+  border: 1px solid black;
+  border-radius: 15px;
+  padding: 5px;
+  text-align: center;
+}
+
 .menu-btn {
   display: none;
 }
@@ -78,21 +88,50 @@
 @media only screen and (max-width: 840px) {
   .sidebar {
     display: none;
+    position: absolute;
+    z-index: 1;
+    width: 30%;
+    margin-left: 15px;
+    border-radius: 10px;
+    width: auto;
+    width: auto !important;
+    height: auto;
+    height: auto !important;
   }
+  .sidebar:hover {
+    border-radius: 50px;
+  }
+  .start_over_button_container {
+    background-color: #62b6cb;
+    margin: 20px;
+  }
+
+  .start_over_button {
+    font-size: 13px !important;
+    animation: none;
+  }
+
+  .start_over_button:hover,
+  .start_over_button:hover * {
+    background-color: #bdd6d6;
+    color: #646a6b;
+    font-size: 13px !important;
+  }
+  /* menu burger button */
   .menu-btn {
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 80px;
-    height: 80px;
+    width: 40px;
+    height: 40px;
     cursor: pointer;
     transition: all 0.5s ease-in-out;
     /* border: 3px solid #fff; */
   }
   .menu-btn__burger {
-    width: 50px;
-    height: 6px;
+    width: 25px;
+    height: 3px;
     background: #000;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(255, 101, 47, 0.2);
@@ -102,18 +141,18 @@
   .menu-btn__burger::after {
     content: "";
     position: absolute;
-    width: 50px;
-    height: 6px;
+    width: 25px;
+    height: 3px;
     background: #000;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(255, 101, 47, 0.2);
     transition: all 0.5s ease-in-out;
   }
   .menu-btn__burger::before {
-    transform: translateY(-16px);
+    transform: translateY(-8px);
   }
   .menu-btn__burger::after {
-    transform: translateY(16px);
+    transform: translateY(8px);
   }
   /* ANIMATION */
   .menu-btn.open .menu-btn__burger {

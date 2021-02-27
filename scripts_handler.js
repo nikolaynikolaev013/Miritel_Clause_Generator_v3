@@ -13,6 +13,15 @@ window.addEventListener('load', ()=>{
     generateSidebar(userData);
     generateClause(userData);
     stepChooser();
+    animateCSS('.sidebar', 'backInDown');
+
+    if (userData.step === 2) {
+        if (userData.timeOfArgument === 'current') {
+                    
+            constants.nextButton.style.display = 'none';
+            generateFormRadioButtons(userData);
+        } 
+    }
 
     let sidebarUl = document.querySelector('.sidebar_ul');
 
@@ -31,6 +40,14 @@ window.addEventListener('load', ()=>{
             updateSidebar(userData);
             resetButtons(constants);
             stepChooser();
+
+            if (userData.step === 2) {
+                if (userData.timeOfArgument === 'current') {
+                            
+                    constants.nextButton.style.display = 'none';
+                    generateFormRadioButtons(userData);
+                } 
+            }
         }
     });
 
@@ -50,6 +67,14 @@ window.addEventListener('load', ()=>{
             generateClause(userData);
             updateSidebar(userData);
             stepChooser();
+            
+            if (userData.step === 2) {
+                if (userData.timeOfArgument === 'current') {
+                            
+                    constants.nextButton.style.display = 'none';
+                    generateFormRadioButtons(userData);
+                } 
+            }
         }
     });
 
@@ -161,14 +186,12 @@ window.addEventListener('load', ()=>{
         userData = setCookie(data, userData);
         generateClause(userData);
 
-
         if (userData.step === 2) {
-            if (userData.typeOfArgument === 'domain' && 
-                userData.timeOfArgument === 'current') {
-                    
+            if (userData.timeOfArgument === 'current') {
+                        
                 constants.nextButton.style.display = 'none';
                 generateFormRadioButtons(userData);
-            }
+            } 
         }
     });
 
@@ -185,7 +208,7 @@ window.addEventListener('load', ()=>{
                 constants.clausePreview.style.display = 'none';
                 break;
             case 2:
-                stepTwo(userData);
+                stepTwo(constants, userData);
                 constants.nextButton.textContent = 'Добавяне на опции';
                 break;
             case 3:
@@ -232,5 +255,4 @@ window.addEventListener('load', ()=>{
                 break;
         }
     }
-
 });

@@ -8,15 +8,20 @@ function stepFourteen(userData){
     let descriptionP = clauseText;
     
     let downloadButton = document.createElement('button');
-    downloadButton.classList.add('button');
     downloadButton.id = 'downloadButton';
     downloadButton.textContent = 'Изтегляне на клаузата';
+    downloadButton.classList.add('animate__animated', 'animate__pulse', 'animate__slower', 'animate__infinite', 'button' );
+    
+
+    let buttonsContainer = document.querySelector('.container');
+    buttonsContainer.appendChild(downloadButton);
 
 
     fillPage(title, [
-        descriptionP, 'blank', downloadButton.outerHTML
+        descriptionP, 'blank'
     ]);
 
+    addClauseClass();
 
     downloadButton = document.querySelector('#downloadButton');
     downloadButton.addEventListener('click', ()=>{
@@ -29,4 +34,9 @@ function stepFourteen(userData){
 
         saveAs(blob, 'clause.txt');
     })
+
+    function addClauseClass(){
+        let clause = document.querySelector('li.main-item');
+        clause.classList.add('final-clause');
+    }
 }

@@ -15,17 +15,19 @@ function getUrlData(){
     let receiverNames = urlParams.get('receiverNames');
     let receiverEmail = urlParams.get('receiverEmail');
     let description = urlParams.get('description');
-
+    let clauseText = urlParams.get('clause');
     
     let descriptionDiv = document.querySelector('#description');
 
     let informationDiv = document.createElement('div');
-    let domainInfoStr = `Домейн: ${domain}<br>
-                    Номер на заявката за регистрация: ${domainNumber}<br>
-                    Дата на заявката за регистрация: ${domainDate}`;
-    let domainInfoP = document.createElement('p');
-    domainInfoP.innerHTML = domainInfoStr;
-    informationDiv.appendChild(domainInfoP);
+    if (domain) {
+        let domainInfoStr = `Домейн: ${domain}<br>
+                        Номер на заявката за регистрация: ${domainNumber}<br>
+                        Дата на заявката за регистрация: ${domainDate}`;
+        let domainInfoP = document.createElement('p');
+        domainInfoP.innerHTML = domainInfoStr;
+        informationDiv.appendChild(domainInfoP);
+    }
     
     let EGNDetails = senderEGN ? `\tЕГН: ${senderEGN}<br>` : '';
     let senderInfoStr = `Име на заявител: ${senderNames}<br>
@@ -37,7 +39,8 @@ function getUrlData(){
     
     let receiverInfoStr = `Име на насрещна страна: ${receiverNames}<br>
                         Имейл на насрещна страна: ${receiverEmail}<br>
-                        Описание на спора: ${description}`;
+                        Описание на спора: ${description}<br><br>
+                        <b>Арбитражна клауза:</b> ${clauseText}`;
     let receiverInfoP = document.createElement('p');
     receiverInfoP.innerHTML = receiverInfoStr;
     informationDiv.appendChild(receiverInfoP);
@@ -47,13 +50,16 @@ function getUrlData(){
     let emailEGNDetails = senderEGN ? `&nbsp;ЕГН: ${senderEGN}<br>` : '';
 
     let acceptButton = document.querySelector('#acceptButton');
+
+    let domainInfo = domain ? `Информация за домейна: <br>
+    &nbsp;Домейн: ${domainName}<br>
+    &nbsp;Номер на заявката за регистрация: ${registrationNumber}<br>
+    &nbsp;Дата на заявката за регистрация: ${registrationDate}<br><br>` : '';
+
     acceptButton.addEventListener('click', ()=>{
             let senderEmailContent = 
         `Следният спор беше потвърден от насрещната страна:<br><br>
-        Информация за домейна: <br>
-            &nbsp;Домейн: ${domain}<br>
-            &nbsp;Номер на заявката за регистрация: ${domainNumber}<br>
-            &nbsp;Дата на заявката за регистрация: ${domainDate}<br><br>
+        ${domainInfo}
         Заявител: <br>
             &nbsp;Имена: ${senderNames}<br>
             ${emailEGNDetails}
@@ -61,7 +67,8 @@ function getUrlData(){
         Насрещна страна:<br>
             &nbsp;Имена: ${receiverNames}<br>
             &nbsp;Имейл: ${receiverEmail}<br>
-            &nbsp;Описание на спора: ${description}`;
+            &nbsp;Описание на спора: ${description}<br><br>
+            <b>Арбитражна клауза:</b> ${clauseText}`;
 
 
         Email.send({
@@ -101,5 +108,9 @@ function getUrlData(){
         sentEmailTitle.style.display = 'block';
         descriptionDiv.style.display = 'none';
         acceptButton.style.display = 'none';
+
+        setTimeout(()=>{
+            window.open('https://www.miritel.bg');
+        }, 5000);
     });
 };

@@ -30,17 +30,116 @@ function stepTwo(constants, userData){
 
     descriptionEl.appendChild(clausePreviewEl);
 
-    
+       
 
 }
 
+
+function generateFormRadioButtons(userData){
+
+    let descriptionEl = document.querySelector(".description");
+
+    let radioButtonsDiv = document.createElement('div');
+
+    let sendTheClauseTitle = document.createElement('h2');
+    sendTheClauseTitle.textContent = "Изпращане на клаузата по имейл";
+    sendTheClauseTitle.classList.add('animate__animated', 'animate__headShake', 'animate__slower', 'animate__infinite');
+    radioButtonsDiv.appendChild(sendTheClauseTitle);
+            
+    //radio buttons
+    radioButtonsDiv.classList.add("formRadioButtons");
+
+    let personRadioButt = createRadioButton('Частно лице', 'person', 'personOrBusiness');
+    let businessRadioButt = createRadioButton('Юридическо лице', 'business', 'personOrBusiness');
+    radioButtonsDiv.appendChild(personRadioButt);
+    radioButtonsDiv.appendChild(businessRadioButt);
+
+    descriptionEl.appendChild(radioButtonsDiv);
+
+
+    radioButtonsDiv.addEventListener('click', (e)=>{
+        if (e.target.id === 'person') {
+            generateForm(userData, descriptionEl, 'person')
+        }else if (e.target.id === 'business') {
+            generateForm(userData, descriptionEl, 'business');
+        }
+    });
+}
+function generateForm(userData, descriptionEl, type){
+    let buttonsContainer = document.querySelector('.container');
+
+    let oldFormEl = document.querySelector('.form');
+    if (oldFormEl) {
+        descriptionEl.removeChild(oldFormEl);
+    }
+
+    let oldFormFooter = document.querySelector('.form-footer');
+    if (oldFormFooter) {
+        descriptionEl.removeChild(oldFormFooter);
+    }
+
+    let oldSendButton = document.querySelector('#send-email-button');
+    if (oldSendButton) {
+        buttonsContainer.removeChild(oldSendButton);
+    }
+
+
+    let formDiv = document.createElement('div');
+    formDiv.classList.add('form');
+
+    if (userData.typeOfArgument === 'domain') {
+        let domainInfoDiv = createDomainInfoDiv();
+        formDiv.appendChild(domainInfoDiv);
+    }
+
+    let senderDiv = createSenderDiv(type);
+    formDiv.appendChild(senderDiv);
+
+    let receiverDiv = createReceiverDiv();
+    formDiv.appendChild(receiverDiv);
+
+    let formFooter = document.createElement('div');
+    formFooter.classList.add('form-footer');
+
+    let sentStatusText = document.createElement('h4');
+    sentStatusText.innerHTML = 'Имейлът беше изпратен успешно. Ще бъдете пренасочени към Мирител БГ след 5 секунди...';
+    sentStatusText.classList.add('sent-status-text');
+    sentStatusText.id = 'sent-status-text';
+    sentStatusText.style.display = 'none';
+    formFooter.appendChild(sentStatusText);
+
+    let errorStatusText = document.createElement('h4');
+    errorStatusText.textContent = 'Моля въведете валидни стойности в полетата с червено.'
+    errorStatusText.classList.add('error');
+    errorStatusText.id = 'errorStatusText';
+    errorStatusText.style.display = 'none';
+    formFooter.appendChild(errorStatusText);
+
+    formDiv.appendChild(document.createElement('br'));
+
+    let sendButton = document.createElement('button');
+    sendButton.textContent = "Изпрати!";
+    sendButton.classList.add('button');
+    sendButton.id = 'send-email-button';
+    buttonsContainer.appendChild(sendButton);
+
+    descriptionEl.appendChild(formDiv);
+    descriptionEl.appendChild(formFooter);
+
+    sendButton.addEventListener('click', (e)=>{
+        if (e.target.id === 'send-email-button') {
+            validateAndSend(userData);
+        }
+    });
+}
 function validateAndSend(userData){
 
     let errorStatusText = document.querySelector('#errorStatusText');
     let sentStatusText = document.querySelector('#sent-status-text');
 
     let isBusiness = document.querySelector('#business').checked;
-
+    let isDomain = userData.typeOfArgument === 'domain';
+    
     let domainNameLabel = document.querySelector('#domainNameInputLabel');
     let domainNameEl = document.querySelector('#domainName');
     let domainName = domainNameEl?.value;
@@ -84,18 +183,20 @@ function validateAndSend(userData){
     let domainRegex = /^((?!-))(xn--)?[a-z0-9][a-z0-9-_]{0,61}[a-z0-9]{0,}\.?((xn--)?([a-z0-9\-.]{1,61}|[a-z0-9-]{1,30})\.?bg)$/;
     let registrationNumberRegex = /[0-9]{5,}/;
 
-    if (!domainName && !domainName.match(domainRegex)) {
-        err = true; domainNameLabel.classList.add('error');
-    }else{
-        err = false; domainNameLabel.classList.remove('error');
-    }
-    
-    if (!registrationNumber.match(registrationNumberRegex)) {
-        err = true;
-        registrationNumberLabel.classList.add('error');
-    }else{
-        err = false;
-        registrationNumberLabel.classList.remove('error');
+    if (isDomain) {
+        if (!domainName && !domainName.match(domainRegex)) {
+            err = true; domainNameLabel.classList.add('error');
+        }else{
+            err = false; domainNameLabel.classList.remove('error');
+        }
+        
+        if (!registrationNumber.match(registrationNumberRegex)) {
+            err = true;
+            registrationNumberLabel.classList.add('error');
+        }else{
+            err = false;
+            registrationNumberLabel.classList.remove('error');
+        }
     }
 
     if (!senderNames) {err = true; senderNamesLabel.classList.add("error");
@@ -131,12 +232,19 @@ function validateAndSend(userData){
         errorStatusText.style.display = 'none';
     }
 
-    let receiverAcceptButtonUrl = 
-        `https://myclause.miritel.bg/accept_arbitrage/index.html?domain=${domainName}&domainNumber=${registrationNumber}&domainDate=${registrationDate}&senderNames=${senderNames}&senderEGN=${senderEGN ? senderEGN : ''}&senderEmail=${senderEmail}&receiverNames=${receiverNames}&receiverEmail=${receiverEmail}&description=${problemDesc}`
+    
+    let clauseText = document.querySelector('#clausePreview').textContent;
+
+    let receiverAcceptButtonUrl = isDomain ?
+        `https://myclause.miritel.bg/accept_arbitrage/index.html?domain=${domainName}&domainNumber=${registrationNumber}&domainDate=${registrationDate}&senderNames=${senderNames}&senderEGN=${senderEGN ? senderEGN : ''}&senderEmail=${senderEmail}&receiverNames=${receiverNames}&receiverEmail=${receiverEmail}&description=${problemDesc}&clause=${clauseText}`
+        : 
+        `https://myclause.miritel.bg/accept_arbitrage/index.html?senderNames=${senderNames}&senderEGN=${senderEGN ? senderEGN : ''}&senderEmail=${senderEmail}&receiverNames=${receiverNames}&receiverEmail=${receiverEmail}&description=${problemDesc}&clause=${clauseText}`
     let receiverEmailContent = 
     `Здравейте, ${receiverNames}!<br><br>
         ${senderNames} желае да разрещи спор с Вас чрез ${typeOfSolve}. <br>
-        Описание на спора: ${problemDesc}<br>
+        Описание на спора: ${problemDesc}<br><br>
+        <b>Арбитражна клауза:</b> ${clauseText}<br><br>
+
         Ако сте съгласни, моля потвърдете тук:
         <a href='${receiverAcceptButtonUrl}' target='_blank'>Потвърждавам!</a>`
 
@@ -149,13 +257,16 @@ function validateAndSend(userData){
     }).then(
     );
 
+    let domainInfo = isDomain ? `Информация за домейна: <br>
+    &nbsp;Домейн: ${domainName}<br>
+    &nbsp;Номер на заявката за регистрация: ${registrationNumber}<br>
+    &nbsp;Дата на заявката за регистрация: ${registrationDate}<br><br>` : '';
+
+
     let EGNDetails = !isBusiness ? `\tЕГН: ${senderEGN}<br>` : '';
     let radoEmailContent = 
     `Изпратена клауза за ${typeOfSolve}.<br><br>
-    Информация за домейна: <br>
-        &nbsp;Домейн: ${domainName}<br>
-        &nbsp;Номер на заявката за регистрация: ${registrationNumber}<br>
-        &nbsp;Дата на заявката за регистрация: ${registrationDate}<br><br>
+    ${domainInfo}
     Заявител: <br>
         &nbsp;Имена: ${senderNames}<br>
         &nbsp;${EGNDetails}
@@ -163,7 +274,8 @@ function validateAndSend(userData){
     Насрещна страна:<br>
         &nbsp;Имена: ${receiverNames}<br>
         &nbsp;Имейл: ${receiverEmail}<br>
-        &nbsp;Описание на спора: ${problemDesc}`;
+        &nbsp;Описание на спора: ${problemDesc}<br><br>
+        <b>Арбитражна клауза:</b> ${clauseText}<br>`;
 
 
     Email.send({
@@ -179,7 +291,7 @@ function validateAndSend(userData){
     let formRadioButtons = document.querySelector('.formRadioButtons');
     let descriptionEl = document.querySelector('.description');
     let form = document.querySelector('.form');
-    let formFooterEl = document.querySelector('.form-footer');
+    let containeEl = document.querySelector('.container'); 
     let sendButton = document.querySelector('#send-email-button');
 
     if (formRadioButtons) {
@@ -189,100 +301,13 @@ function validateAndSend(userData){
         descriptionEl.removeChild(form);
     }
     if (sendButton) {
-        formFooterEl.removeChild(sendButton);
+        containeEl.removeChild(sendButton);
     }
 
-
+    setTimeout(()=>{
+        window.open('https://www.miritel.bg');
+    }, 5000);
 }
-
-function generateFormRadioButtons(userData){
-
-    let descriptionEl = document.querySelector(".description");
-
-    let radioButtonsDiv = document.createElement('div');
-
-    let sendTheClauseTitle = document.createElement('h2');
-    sendTheClauseTitle.textContent = "Изпращане на клаузата по имейл";
-    radioButtonsDiv.appendChild(sendTheClauseTitle);
-            
-    //radio buttons
-    radioButtonsDiv.classList.add("formRadioButtons");
-
-    let personRadioButt = createRadioButton('Частно лице', 'person', 'personOrBusiness');
-    let businessRadioButt = createRadioButton('Юридическо лице', 'business', 'personOrBusiness');
-    radioButtonsDiv.appendChild(personRadioButt);
-    radioButtonsDiv.appendChild(businessRadioButt);
-
-    descriptionEl.appendChild(radioButtonsDiv);
-
-
-    radioButtonsDiv.addEventListener('click', (e)=>{
-        if (e.target.id === 'person') {
-            generateForm(userData, descriptionEl, 'person')
-        }else if (e.target.id === 'business') {
-            generateForm(userData, descriptionEl, 'business');
-        }
-    });
-}
-
-function generateForm(userData, descriptionEl, type){
-
-    let oldFormEl = document.querySelector('.form');
-    if (oldFormEl) {
-        descriptionEl.removeChild(oldFormEl);
-    }
-
-    let oldFormFooter = document.querySelector('.form-footer');
-    if (oldFormFooter) {
-        descriptionEl.removeChild(oldFormFooter);
-    }
-
-    let formDiv = document.createElement('div');
-    formDiv.classList.add('form');
-
-    let domainInfoDiv = createDomainInfoDiv();
-    formDiv.appendChild(domainInfoDiv);
-
-    let senderDiv = createSenderDiv(type);
-    formDiv.appendChild(senderDiv);
-
-    let receiverDiv = createReceiverDiv();
-    formDiv.appendChild(receiverDiv);
-
-    let formFooter = document.createElement('div');
-    formFooter.classList.add('form-footer');
-
-    let sentStatusText = document.createElement('h4');
-    sentStatusText.textContent = 'Имейлът беше изпратен успешно.';
-    sentStatusText.classList.add('sent-status-text');
-    sentStatusText.id = 'sent-status-text';
-    sentStatusText.style.display = 'none';
-    formFooter.appendChild(sentStatusText);
-
-    let errorStatusText = document.createElement('h4');
-    errorStatusText.textContent = 'Моля въведете валидни стойности в полетата с червено.'
-    errorStatusText.classList.add('error');
-    errorStatusText.id = 'errorStatusText';
-    errorStatusText.style.display = 'none';
-    formFooter.appendChild(errorStatusText);
-
-    formDiv.appendChild(document.createElement('br'));
-    let sendButton = document.createElement('button');
-    sendButton.textContent = "Изпрати!";
-    sendButton.classList.add('button');
-    sendButton.id = 'send-email-button';
-    formFooter.appendChild(sendButton);
-
-    descriptionEl.appendChild(formDiv);
-    descriptionEl.appendChild(formFooter);
-
-    sendButton.addEventListener('click', (e)=>{
-        if (e.target.id === 'send-email-button') {
-            validateAndSend(userData);
-        }
-    });
-}
-
 function createDomainInfoDiv(){
     let domainInfoDiv = document.createElement('div');
     domainInfoDiv.classList.add('domainInfoDiv');
